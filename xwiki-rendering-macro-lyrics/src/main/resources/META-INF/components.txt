@@ -1,0 +1,4 @@
+org.xwiki.rendering.lyrics.LyricsMacro
+org.xwiki.rendering.lyrics.LyricsChangeListener
+org.xwiki.rendering.lyrics.LyricsClassBuilder
+org.xwiki.rendering.lyrics.LyricsClassInitializer
