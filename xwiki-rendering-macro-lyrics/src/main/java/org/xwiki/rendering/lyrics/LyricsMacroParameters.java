@@ -19,6 +19,10 @@
  */
 package org.xwiki.rendering.lyrics;
 
+import org.xwiki.properties.annotation.PropertyDescription;
+import org.xwiki.properties.annotation.PropertyMandatory;
+
 public class LyricsMacroParameters
 {
+
 }

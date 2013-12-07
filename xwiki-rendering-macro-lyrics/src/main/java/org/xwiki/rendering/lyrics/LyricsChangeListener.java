@@ -1,13 +1,13 @@
 package org.xwiki.rendering.lyrics;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
 
+import org.xwiki.bridge.event.DocumentCreatedEvent;
 import org.xwiki.bridge.event.DocumentUpdatedEvent;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.component.manager.ComponentManager;
@@ -34,6 +34,7 @@ public class LyricsChangeListener implements EventListener {
 	public List<Event> getEvents() {
 		List<Event> events = new ArrayList<Event>();
 		events.add(new DocumentUpdatedEvent());
+		events.add(new DocumentCreatedEvent());
 		return events;
 	}
 
@@ -64,7 +65,7 @@ public class LyricsChangeListener implements EventListener {
 		XWikiDocument doc = (XWikiDocument) source;
 		XWikiContext context = (XWikiContext) data;
 
-		if ((event instanceof DocumentUpdatedEvent)) {
+		if ((event instanceof DocumentCreatedEvent)||(event instanceof DocumentUpdatedEvent)) {
 			List<MacroBlock> macros = new ArrayList<MacroBlock>();
 			getLyricsMacros(macros, doc.getXDOM().getRoot());
 

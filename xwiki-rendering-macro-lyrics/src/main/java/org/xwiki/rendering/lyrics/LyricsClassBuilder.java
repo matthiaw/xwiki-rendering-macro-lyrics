@@ -79,7 +79,6 @@ public class LyricsClassBuilder implements WikiComponentBuilder {
 					n.setTitle(obj.getStringValue("title"));
 					n.setCcli(obj.getStringValue("ccli"));
 					n.setArtist(obj.getStringValue("artist"));
-					System.out.println(obj.getStringValue("capo"));
 					try {
 						n.setCapo(Integer.valueOf(obj.getStringValue("capo")));
 					} catch (Exception e) {
