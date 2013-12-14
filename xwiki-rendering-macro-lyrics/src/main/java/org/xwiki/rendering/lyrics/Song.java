@@ -126,7 +126,7 @@ public class Song
     public void setScale(double scale)
     {
 
-        System.out.println("Status Set Scale: " + chordScale);
+        // System.out.println("Status Set Scale: " + chordScale);
 
         if (chordScale == 0.0) {
             this.chordScale = scale;
@@ -148,14 +148,14 @@ public class Song
             content.remove(content.size() - 1);
         }
 
-        if (number!=null) {
+        if (number != null) {
             if (!number.isEmpty()) {
-                sbOnsong.append("{title: "+ title + " ("+number+")}/Newline/");        
+                sbOnsong.append("{title: " + title + " (" + number + ")}/Newline/");
             }
         }
-        
+
         if (subtitle != null) {
-            sbOnsong.append("{subtitle: " + subtitle + "}/Newline/");
+            sbOnsong.append("{subtitle: " + subtitle.trim() + "}/Newline/");
         }
         sbOnsong.append("{artist: " + artist + "}/Newline/");
         if (capo != 0) {
@@ -168,8 +168,8 @@ public class Song
             sbOnsong.append(c.getContent(Parser.OnSong).trim() + "/Newline/");
         }
 
-        sbOnsong.append("{copyright: "+copyright + "}/Newline/");
-        sbOnsong.append("{ccli: "+ccli + "}/Newline/");
+        sbOnsong.append("{copyright: " + copyright + "}/Newline/");
+        sbOnsong.append("{ccli: " + ccli + "}/Newline/");
         if (source != null) {
             sbOnsong.append(source + "/Newline/");
         }
@@ -177,7 +177,9 @@ public class Song
         VelocityContext context = new VelocityContext();
         context.put("content", sbWiki.toString());
         context.put("title", title);
-        context.put("subtitle", subtitle);
+        if (subtitle != null) {
+            context.put("subtitle", subtitle.trim());
+        }
         context.put("artist", artist);
         context.put("score", getScore());
         if (capo == 0) {
@@ -197,40 +199,47 @@ public class Song
             StringWriter writer = new StringWriter();
             StringBuilder template = new StringBuilder();
 
+            // System.out.println("X: "+chordScale);
+
             double scale = chordScale;
-            if (scale == 0.0) {
-                scale = 0.5;
+            if (scale <= 0.0) {
+                scale = 0.30;
             }
 
             template.append("{{velocity}}\n");
             template.append("$xwiki.ssfx.use(\"js/xwiki/lyrics/lyrics.css\")\n");
             template.append("{{/velocity}}\n");
-           
-//            template.append("\n{{html}}\n");
-//            template.append("<form><button class=\"noPrint\" style=\"float: right;\" title=\"Download OnSong\" type=\"submit\" name=\"onsong\" value=\""
-//                + sbOnsong.toString()
-//                + "\"><img src=\"../../../resources/icons/silk/page_go.png\" alt=\"OnSong\"></button></form>\n");
-//            template.append("{{/html}}\n");
 
+            // template.append("\n{{html}}\n");
+            // template.append("<form><button class=\"noPrint\" style=\"float: right;\" title=\"Download OnSong\" type=\"submit\" name=\"onsong\" value=\""
+            // + sbOnsong.toString()
+            // + "\"><img src=\"../../../resources/icons/silk/page_go.png\" alt=\"OnSong\"></button></form>\n");
+            // template.append("{{/html}}\n");
+
+            template.append("\n{{html clean=\"false\"}}\n");
             template.append("#if (\"$!subtitle\" == \"\")\n");
             template.append("#else\n");
-            template.append("  **$subtitle**\n");
+            // template.append("  **$subtitle**\n");
+            template.append("<div class=\"lyrics_subtitle\">$subtitle</div><br/>\n");
             template.append("#end\n");
-            template.append("\n{{html clean=\"false\"}}\n");
-//            template.append("<div class=\"lyrics_info\">\n");
+
+            // template.append("<div class=\"lyrics_info\">\n");
             template.append("<div class=\"lyrics_artist\">$artist</div>\n");
-            template.append("<div class=\"noPrint\" style=\"float: right;\"><form><button title=\"Download OnSong\" type=\"submit\" name=\"onsong\" value=\""
-                + sbOnsong.toString()
-                + "\"><img src=\"../../../resources/icons/silk/page_go.png\" alt=\"OnSong\"></button></form></div>\n");
+            template
+                .append("<div class=\"noPrint\" style=\"float: right;\"><form><button title=\"Download OnSong\" type=\"submit\" name=\"onsong\" value=\""
+                    + sbOnsong.toString()
+                    + "\"><img src=\"../../../resources/icons/silk/page_go.png\" alt=\"OnSong\"></button></form></div>\n");
             template.append("<br/><div class=\"lyrics_score\">$score</div><br/>\n");
             template.append("#if (\"$!capo\" == \"\")\n");
             template.append("#else\n");
             template.append("<div class=\"lyrics_capo\">Capo: $capo</div>\n");
-//            template.append("</div>\n");
+            // template.append("</div>\n");
             template.append("#end\n");
-            
-//            template.append("{{/html}}\n");
-//            template.append("\n{{html clean=\"false\"}}\n");
+
+            // System.out.println(scale);
+            template.append("<BR/><BR/>\n");
+            // template.append("{{/html}}\n");
+            // template.append("\n{{html clean=\"false\"}}\n");
             for (Chord c : drawableChords) {
                 template.append("" + c.getDiagram(scale) + "\n");
             }
@@ -240,7 +249,7 @@ public class Song
             for (Chord c : drawableCapoChords) {
                 template.append("" + c.getDiagram(scale) + "\n");
             }
-           
+
             template.append("<BR/>{{/html}}\n");
             template.append("$content\n");
             template.append(",,$!copyright,,\n");
@@ -268,8 +277,8 @@ public class Song
                 template.append("#set($content=$request.getParameter(\"onsong\"))\n");
                 template.append("$response.setContentType(\"text/plain\");\n");
                 template.append("$response.setCharacterEncoding('UTF-8')\n");
-                template.append("$response.setHeader(\"Content-Disposition\", \"attachment; filename=" + simpleTokenReplace(title)
-                    + ".txt\");\n");
+                template.append("$response.setHeader(\"Content-Disposition\", \"attachment; filename="
+                    + simpleTokenReplace(title) + ".txt\");\n");
                 template.append("$response.writer.print($content.replace(\"/Newline/\", \"\n");
                 template.append("\"))\n");
                 template.append("$context.setFinished(true);\n");
@@ -289,26 +298,27 @@ public class Song
 
         return result;
     }
-    
-    private String simpleTokenReplace(String s) {
-        StringBuilder sb = new StringBuilder(); 
+
+    private String simpleTokenReplace(String s)
+    {
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if (c=='ß') {
+            if (c == 'ß') {
                 sb.append("ss");
-            } else if (c=='ü') {
+            } else if (c == 'ü') {
                 sb.append("ue");
-            } else if (c=='ö') {
+            } else if (c == 'ö') {
                 sb.append("oe");
-            } else if (c=='Ä') {
+            } else if (c == 'Ä') {
                 sb.append("Ae");
-            } else if (c=='Ö') {
+            } else if (c == 'Ö') {
                 sb.append("Oe");
-            } else if (c=='Ü') {
+            } else if (c == 'Ü') {
                 sb.append("Ue");
-            } else if (c=='ä') {
+            } else if (c == 'ä') {
                 sb.append("ae");
-            } else if (c==' ') {
+            } else if (c == ' ') {
                 sb.append("_");
             } else {
                 sb.append(c);
@@ -426,7 +436,7 @@ public class Song
 
     public Song(String song)
     {
-        chordScale = 0.5;
+        // chordScale = 0.5;
         load(song);
     }
 
@@ -614,12 +624,13 @@ public class Song
             }
 
             ChordFamily chord = ChordFamilys.getChordFamily(chordInSequence.getName());
+//            System.out.println(chordInSequence.getName());
+//            System.out.println(chord);
             if (chord == null) {
                 if (!containsMissedChord(chordInSequence.getName())) {
                     missedChords.add(chordInSequence);
                 }
             } else {
-
                 if (chordInSequence.hasFretPos()) {
                     int fret = chordInSequence.getFretPos();
                     addChord(chord, fret, chordInSequence.getName());
@@ -648,8 +659,10 @@ public class Song
             Chord chord = null;
             if (fretPos == 1) {
                 chord = chordFamily.getFirstChord();
+//                System.out.println("FirstChord '"+chord.getFamily().getFamilyName()+"': "+chord.getFretPositionBase());
             } else {
                 chord = chordFamily.getChordOnFret(fretPos);
+//                System.out.println("FretChord '"+chord.getFamily().getFamilyName()+"': "+chord.getFretPositionBase());
                 if (chord == null) {
                     chord = chordFamily.getFirstChord();
                     if (showMissingChordsOnSpecificFret) {

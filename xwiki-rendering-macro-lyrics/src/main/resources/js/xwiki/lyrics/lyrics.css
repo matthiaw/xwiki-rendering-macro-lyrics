@@ -42,10 +42,20 @@ td.lyrics_verses {
 
 .lyrics_comment {
   font-style: italic;
+  font-weight: bold;	
   background-color: #ffffff;
   border-spacing: 0px;
   padding: 0px;
   border: 0px;
+}
+
+.lyrics_subtitle {
+  font-style: italic;	
+  font-weight: bold;
+  font-size: 18px;
+  float:left;	
+  /*position:relative;
+  top:80px;*/
 }
 
 .lyrics_artist {

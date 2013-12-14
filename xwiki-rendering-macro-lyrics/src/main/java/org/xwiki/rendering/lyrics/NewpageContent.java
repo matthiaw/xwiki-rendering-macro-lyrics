@@ -11,7 +11,13 @@ public class NewpageContent implements Content {
 	
 	@Override
 	public String getContent(Parser parser) {
-		return "{{html}}\n\n<SPAN CLASS=\"pagebreak\"/>{{/html}}\n";
+	    
+	    if (parser == Parser.OnSong) {
+	        return "/Newline/";
+	    } else {
+	        return "{{html}}\n\n<SPAN CLASS=\"pagebreak\"/>{{/html}}\n";   
+	    }
+		
 	}
 
 }
