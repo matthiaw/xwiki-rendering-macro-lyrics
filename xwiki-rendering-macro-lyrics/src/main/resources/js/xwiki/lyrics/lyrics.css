@@ -23,7 +23,7 @@ td.lyrics_verses {
 
 .lyrics_capo {
   font-style: italic;	
-  float:right;	
+  float:left;	
  /*position:relative;
   top:80px;*/
 }
@@ -35,7 +35,7 @@ td.lyrics_verses {
 }
 
 .lyrics_score {
-  float:right;	
+  float:left;	
   /*position:relative;
   top:80px;*/
 }
@@ -51,7 +51,7 @@ td.lyrics_verses {
 .lyrics_artist {
   font-style: italic;	
   font-weight: bold;
-  float:right;	
+  float:left;	
   /*position:relative;
   top:80px;*/
 }
