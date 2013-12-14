@@ -218,7 +218,7 @@ public class Song
             template.append("#end\n");
             template.append("\n{{html clean=\"false\"}}\n");
 //            template.append("<div class=\"lyrics_info\">\n");
-            template.append("<div class=\"lyrics_artist\">$artist</div><BR/>\n");
+            template.append("<div class=\"lyrics_artist\">$artist</div>\n");
             template.append("<div class=\"noPrint\" style=\"float: right;\"><form><button title=\"Download OnSong\" type=\"submit\" name=\"onsong\" value=\""
                 + sbOnsong.toString()
                 + "\"><img src=\"../../../resources/icons/silk/page_go.png\" alt=\"OnSong\"></button></form></div>\n");
