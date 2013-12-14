@@ -63,10 +63,15 @@ td.lyrics_verses {
 div.lyrics_chorus {
   position:relative;
   left:50px;	
+  display: inline-block;
 }
 
 @media print 
 {
+  #contentcolumn .main {
+     margin: auto;
+  }
+
   #hierarchy, #document-info, #xwikidata, #xdocAuthors, #_comments, #xdocTags, #xdocFooter, #headerglobal {
      display:none;
   }

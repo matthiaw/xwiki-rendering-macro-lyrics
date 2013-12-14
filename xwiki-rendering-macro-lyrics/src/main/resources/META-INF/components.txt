@@ -3,3 +3,4 @@ org.xwiki.rendering.lyrics.LyricsIndexMacro
 org.xwiki.rendering.lyrics.LyricsChangeListener
 org.xwiki.rendering.lyrics.LyricsClassBuilder
 org.xwiki.rendering.lyrics.LyricsClassInitializer
+org.xwiki.rendering.lyrics.IncludeLyricsMacro

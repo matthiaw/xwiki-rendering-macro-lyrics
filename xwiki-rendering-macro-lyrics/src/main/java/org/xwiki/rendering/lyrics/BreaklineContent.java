@@ -14,7 +14,7 @@ public class BreaklineContent implements Content {
 	}
 	
 	@Override
-	public String getContent() {
+	public String getContent(Parser parser) {
 		return "";
 	}
 }

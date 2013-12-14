@@ -22,7 +22,15 @@ package org.xwiki.rendering.lyrics;
 import org.xwiki.properties.annotation.PropertyDescription;
 import org.xwiki.properties.annotation.PropertyMandatory;
 
-public class LyricsMacroParameters
-{
+public class LyricsMacroParameters {
+	private String scale;
 
+	public String getScale() {
+		return this.scale;
+	}
+
+	@PropertyDescription("Scale of Chords")
+	public void setScale(String scale) {
+		this.scale = scale;
+	}
 }

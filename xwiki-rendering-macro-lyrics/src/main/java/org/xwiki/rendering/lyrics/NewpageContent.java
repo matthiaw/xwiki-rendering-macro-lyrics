@@ -10,7 +10,7 @@ public class NewpageContent implements Content {
 	}
 	
 	@Override
-	public String getContent() {
+	public String getContent(Parser parser) {
 		return "{{html}}\n\n<SPAN CLASS=\"pagebreak\"/>{{/html}}\n";
 	}
 

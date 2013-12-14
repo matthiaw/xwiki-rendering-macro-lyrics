@@ -15,7 +15,14 @@ public class CommentContent implements Content {
 	}
 
 	@Override
-	public String getContent() {
-		return "{{box cssClass=\"lyrics_comment\"}}\n"+content+"\n{{/box}}";
+	public String getContent(Parser parser) {
+	    
+	    if (parser==Parser.OnSong) {
+	        return "{comment: "+content+"}";  
+	    } else {
+	        return "{{box cssClass=\"lyrics_comment\"}}\n"+content+"\n{{/box}}";
+	    }
+	    
+		
 	}
 }

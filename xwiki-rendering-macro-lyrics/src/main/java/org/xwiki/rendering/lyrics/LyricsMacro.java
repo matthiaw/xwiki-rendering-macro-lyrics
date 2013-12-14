@@ -55,20 +55,19 @@ public class LyricsMacro extends AbstractMacro<LyricsMacroParameters>
     private static final String CONTENT_DESCRIPTION = "the text of the song";
 
     @Inject
-	private MacroContentParser contentParser;
-    
+    private MacroContentParser contentParser;
+
     /**
      * Create and initialize the descriptor of the macro.
      */
     public LyricsMacro()
     {
-        super("Lyrics", DESCRIPTION, new DefaultContentDescriptor(CONTENT_DESCRIPTION),
-            LyricsMacroParameters.class);
+        super("Lyrics", DESCRIPTION, new DefaultContentDescriptor(CONTENT_DESCRIPTION), LyricsMacroParameters.class);
         setDefaultCategory(DEFAULT_CATEGORY_CONTENT);
     }
-    
+
     @Inject
-    protected Execution execution; 
+    protected Execution execution;
 
     @Override
     public boolean supportsInlineMode()
@@ -82,20 +81,33 @@ public class LyricsMacro extends AbstractMacro<LyricsMacroParameters>
         return 500;
     }
 
-//    private XWikiContext getXWikiContext() {
-//    	return (XWikiContext) execution.getContext().getProperty("xwikicontext");
-//    }
-    
+    // private XWikiContext getXWikiContext() {
+    // return (XWikiContext) execution.getContext().getProperty("xwikicontext");
+    // }
+
     @Override
     public List<Block> execute(LyricsMacroParameters parameters, String content, MacroTransformationContext context)
         throws MacroExecutionException
     {
-    	Song song = new Song(content);
-    	
+        Song song = new Song(content);
+
+//        String scaleParam = parameters.getScale();
+//        // System.out.println(scaleParam);
+//        // System.out.println(context.getXDOM());
+//        if (scaleParam != null) {
+//            if (!scaleParam.isEmpty()) {
+//                double scale = 0.0;
+//                scale = Double.parseDouble(scaleParam);
+//                if (scale >= 0) {
+//                    song.setScale(scale);
+//                }
+//            }
+//        }
+
         List<Block> result = this.contentParser.parse(song.parse(), context, true, context.isInline()).getChildren();
 
-//        System.out.println(context.getXDOM());
-        
+        // System.out.println(context.getXDOM());
+
         return result;
     }
 }

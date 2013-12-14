@@ -2,6 +2,8 @@ package org.xwiki.rendering.lyrics;
 
 import java.util.StringTokenizer;
 
+import org.jgroups.util.UUID;
+
 /**
  * Chord Class for holding relevant informations and creating chord diagrams
  * 
@@ -314,7 +316,9 @@ public class Chord implements Comparable {
 	private ChordFamily family;
 
 	public void setWritableName(String name) {
-		writableName = name;
+//		/** Canvases must be differentiated if lyrics are agreggated in one page, so an uuid is used.*/
+//		UUID uuid = UUID.randomUUID();
+		writableName = name;//+"_"+ uuid.toString();
 	}
 
 	private String drawLine(double x1, double y1, double x2, double y2) {
@@ -355,15 +359,18 @@ public class Chord implements Comparable {
 	}
 
 	public String getDiagram(double scale) {
-
+		
 		StringBuilder result = new StringBuilder();
 
 		int fretSpace = (height - lower_border - upper_border) / 5;
 		int stringSpace = (width - right_border - left_border) / 5;
 
-		result.append("<canvas id=\"" + getNameWritable() + "\" width=\"" + width * scale + "\" height=\"" + height * scale + "\"></canvas>\n");
+		/** Canvases must be differentiated if lyrics are agreggated in one page, so an uuid is used.*/
+		UUID uuid = UUID.randomUUID();
+		
+		result.append("<canvas id=\"" + getNameWritable()+"_"+ uuid.toString() + "\" width=\"" + width * scale + "\" height=\"" + height * scale + "\"></canvas>\n");
 		result.append("<script>\n");
-		result.append("  var c=document.getElementById('" + getNameWritable() + "');\n");
+		result.append("  var c=document.getElementById('" + getNameWritable()+"_"+ uuid.toString() + "');\n");
 		result.append("  var ctx=c.getContext('2d');\n");
 
 		if (this.fretBase == -1) {
@@ -521,11 +528,11 @@ public class Chord implements Comparable {
 	}
 
 	public String getNameWritable() {
-
+		
 		if (this.fretBase == -1) {
 			return "Missed_" + writableName;
 		}
-
+		
 		return writableName;
 	}
 

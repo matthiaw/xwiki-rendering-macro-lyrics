@@ -9,7 +9,7 @@ public class Sequence {
 
 	private String name;
 
-	private String verse;
+	private String verse = "";
 
 	public String getFullName() {
 		return name;
@@ -46,7 +46,7 @@ public class Sequence {
 	}
 
 	public void setVerse(String verse) {
-		this.verse = verse;
+		this.verse = verse;//.replace("_", " ");
 	}
 
 }
