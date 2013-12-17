@@ -26,7 +26,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.xwiki.rendering</groupId>
   <artifactId>xwiki-rendering-macro-lyrics</artifactId>
-  <version>1.0</version>
+  <version>1.01</version>
   <name>XWiki Macro - Lyrics</name>
   <description>XWiki Macro - Lyrics</description>
   <properties>
