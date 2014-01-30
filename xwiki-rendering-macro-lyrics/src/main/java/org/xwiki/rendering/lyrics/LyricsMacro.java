@@ -91,6 +91,12 @@ public class LyricsMacro extends AbstractMacro<LyricsMacroParameters>
     {
         Song song = new Song(content);
 
+        if (parameters.getFret()!=null) {
+            if (parameters.getFret().equalsIgnoreCase("false")) {
+                song.frets(false);
+            }
+        }
+        
 //        String scaleParam = parameters.getScale();
 //        // System.out.println(scaleParam);
 //        // System.out.println(context.getXDOM());

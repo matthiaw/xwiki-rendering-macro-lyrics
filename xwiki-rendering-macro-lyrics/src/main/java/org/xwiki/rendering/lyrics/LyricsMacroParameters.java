@@ -33,4 +33,15 @@ public class LyricsMacroParameters {
 	public void setScale(String scale) {
 		this.scale = scale;
 	}
+	
+	private String fret;
+
+    public String getFret() {
+        return this.fret;
+    }
+
+    @PropertyDescription("Show Frets")
+    public void setFret(String fret) {
+        this.fret = fret;
+    }
 }

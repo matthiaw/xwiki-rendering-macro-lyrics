@@ -15,8 +15,15 @@ public class DefaultLyrics implements Lyrics {
 	private DocumentReference authorReference;
 
 	public XWikiDocument getDocument() {
+	    ShowFretEntity.VALUE = true;
 		return xwikiDocument;
 	}
+	
+	public XWikiDocument getDocument(boolean fret) {
+	    ShowFretEntity.VALUE = fret;
+//	    System.out.println(ShowFretEntity.VALUE);
+        return xwikiDocument;
+    }
 
 	public void setDocument(XWikiDocument xwikiDocument) {
 		this.xwikiDocument = xwikiDocument;

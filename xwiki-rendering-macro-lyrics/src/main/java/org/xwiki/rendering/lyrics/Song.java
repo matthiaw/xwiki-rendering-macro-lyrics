@@ -135,6 +135,13 @@ public class Song
         System.out.println("Set Scale: " + scale);
     }
 
+    private boolean frets = true;
+
+    public void frets(boolean frets)
+    {
+        this.frets = frets;
+    }
+
     public String parse()
     {
         StringBuilder sbWiki = new StringBuilder();
@@ -240,14 +247,20 @@ public class Song
             template.append("<BR/><BR/>\n");
             // template.append("{{/html}}\n");
             // template.append("\n{{html clean=\"false\"}}\n");
-            for (Chord c : drawableChords) {
-                template.append("" + c.getDiagram(scale) + "\n");
-            }
-            if (drawableCapoChords.size() > 0) {
-                template.append("<BR/>\n");
-            }
-            for (Chord c : drawableCapoChords) {
-                template.append("" + c.getDiagram(scale) + "\n");
+            if (ShowFretEntity.VALUE) {
+                if (frets) {
+//                    System.out.println("show:" + ShowFretEntity.VALUE);
+//                    System.out.println("frets:" + frets);
+                    for (Chord c : drawableChords) {
+                        template.append("" + c.getDiagram(scale) + "\n");
+                    }
+                    if (drawableCapoChords.size() > 0) {
+                        template.append("<BR/>\n");
+                    }
+                    for (Chord c : drawableCapoChords) {
+                        template.append("" + c.getDiagram(scale) + "\n");
+                    }
+                }
             }
 
             template.append("<BR/>{{/html}}\n");
@@ -624,8 +637,8 @@ public class Song
             }
 
             ChordFamily chord = ChordFamilys.getChordFamily(chordInSequence.getName());
-//            System.out.println(chordInSequence.getName());
-//            System.out.println(chord);
+            // System.out.println(chordInSequence.getName());
+            // System.out.println(chord);
             if (chord == null) {
                 if (!containsMissedChord(chordInSequence.getName())) {
                     missedChords.add(chordInSequence);
@@ -659,10 +672,10 @@ public class Song
             Chord chord = null;
             if (fretPos == 1) {
                 chord = chordFamily.getFirstChord();
-//                System.out.println("FirstChord '"+chord.getFamily().getFamilyName()+"': "+chord.getFretPositionBase());
+                // System.out.println("FirstChord '"+chord.getFamily().getFamilyName()+"': "+chord.getFretPositionBase());
             } else {
                 chord = chordFamily.getChordOnFret(fretPos);
-//                System.out.println("FretChord '"+chord.getFamily().getFamilyName()+"': "+chord.getFretPositionBase());
+                // System.out.println("FretChord '"+chord.getFamily().getFamilyName()+"': "+chord.getFretPositionBase());
                 if (chord == null) {
                     chord = chordFamily.getFirstChord();
                     if (showMissingChordsOnSpecificFret) {

@@ -8,6 +8,8 @@ public interface Lyrics extends WikiComponent {
 	public static final String CLASS = "Lyrics";
 
 	public XWikiDocument getDocument();
+	
+	public XWikiDocument getDocument(boolean fret);
 
 	public String getTitle();
 	
