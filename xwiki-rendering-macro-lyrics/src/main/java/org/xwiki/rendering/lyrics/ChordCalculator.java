@@ -325,6 +325,9 @@ public class ChordCalculator {
 	}
 
 	public static String getCorrectChordPattern(String rootNote, String chordPattern, String bassNote) {
+//	    System.out.println("root: "+rootNote);
+//	    System.out.println("chord: "+chordPattern);
+//	    System.out.println("bass: "+bassNote);
 		if (chordPattern.contains("Inversion") && !rootNote.equals(bassNote)) {
 			chordPattern = inversions.get(chordPattern);
 		}
