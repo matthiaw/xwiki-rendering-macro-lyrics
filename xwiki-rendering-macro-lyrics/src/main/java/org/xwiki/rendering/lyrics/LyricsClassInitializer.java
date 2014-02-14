@@ -51,6 +51,9 @@ public class LyricsClassInitializer extends AbstractMandatoryDocumentInitializer
 	public static final String FIELD_CAPO = "capo";
 	public static final String FIELDPN_CAPO = "Capo";
 	
+	public static final String FIELD_ONSONG = "onsong";
+    public static final String FIELDPN_ONSONG = "OnSong";
+    
 	/**
 	 * Used to bind a class to a document sheet.
 	 */
@@ -85,6 +88,7 @@ public class LyricsClassInitializer extends AbstractMandatoryDocumentInitializer
 		needsUpdate |= baseClass.addTextField(FIELD_CAPO, FIELDPN_CAPO, 30);
 		needsUpdate |= baseClass.addTextField(FIELD_CCLI, FIELDPN_CCLI, 30);
 		needsUpdate |= baseClass.addTextField(FIELD_COPYRIGHT, FIELDPN_COPYRIGHT, 30);
+		needsUpdate |= baseClass.addTextAreaField(FIELD_ONSONG, FIELDPN_ONSONG, 30, 5);
 		
 		// Add missing document fields
 		needsUpdate |= setClassDocumentFields(document, Lyrics.CLASS+"Class");

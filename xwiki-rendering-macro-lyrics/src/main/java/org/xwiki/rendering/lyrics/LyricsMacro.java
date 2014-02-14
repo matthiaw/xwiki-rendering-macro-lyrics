@@ -97,18 +97,18 @@ public class LyricsMacro extends AbstractMacro<LyricsMacroParameters>
             }
         }
         
-//        String scaleParam = parameters.getScale();
-//        // System.out.println(scaleParam);
-//        // System.out.println(context.getXDOM());
-//        if (scaleParam != null) {
-//            if (!scaleParam.isEmpty()) {
-//                double scale = 0.0;
-//                scale = Double.parseDouble(scaleParam);
-//                if (scale >= 0) {
-//                    song.setScale(scale);
-//                }
-//            }
-//        }
+        String scaleParam = parameters.getScale();
+        // System.out.println(scaleParam);
+        // System.out.println(context.getXDOM());
+        if (scaleParam != null) {
+            if (!scaleParam.isEmpty()) {
+                double scale = 0.0;
+                scale = Double.parseDouble(scaleParam);
+                if (scale >= 0) {
+                    song.setScale(scale);
+                }
+            }
+        }
 
         List<Block> result = this.contentParser.parse(song.parse(), context, true, context.isInline()).getChildren();
 

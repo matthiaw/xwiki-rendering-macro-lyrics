@@ -25,9 +25,9 @@ public class Song
 
     private String subtitle;
 
-    private List<String> melodyFiles = new ArrayList<String>();
+    private List<String> melodies = new ArrayList<String>();
 
-    private List<String> videoFiles = new ArrayList<String>();
+    // private List<String> videoFiles = new ArrayList<String>();
 
     private String notes;
 
@@ -52,14 +52,9 @@ public class Song
         return subtitle;
     }
 
-    public List<String> getMelodyFiles()
+    public List<String> getMelodies()
     {
-        return melodyFiles;
-    }
-
-    public List<String> getVideoFiles()
-    {
-        return videoFiles;
+        return melodies;
     }
 
     public String getNotes()
@@ -125,14 +120,11 @@ public class Song
 
     public void setScale(double scale)
     {
-
-        // System.out.println("Status Set Scale: " + chordScale);
-
         if (chordScale == 0.0) {
             this.chordScale = scale;
         }
 
-        System.out.println("Set Scale: " + scale);
+        // System.out.println("Set Scale: " + scale);
     }
 
     private boolean frets = true;
@@ -140,6 +132,48 @@ public class Song
     public void frets(boolean frets)
     {
         this.frets = frets;
+    }
+
+    public String getOnSong()
+    {
+        StringBuilder sbOnsong = new StringBuilder();
+
+        if (content.get(0) instanceof BreaklineContent) {
+            content.remove(0);
+        }
+
+        if (content.get(content.size() - 1) instanceof BreaklineContent) {
+            content.remove(content.size() - 1);
+        }
+
+        if (number != null) {
+            if (!number.isEmpty()) {
+                sbOnsong.append("{title: " + title + " (" + number + ")}\n");
+            }
+        }
+
+        if (subtitle != null) {
+            sbOnsong.append("{subtitle: " + subtitle.trim() + "}\n");
+        }
+        sbOnsong.append("{artist: " + artist + "}\n");
+        if (capo != 0) {
+            sbOnsong.append("{capo: " + capo + "}\n");
+        }
+
+        sbOnsong.append("\n");
+        for (Content c : content) {
+            sbOnsong.append(c.getContent(Parser.OnSong).trim().replace("\"", "'") + "\n");
+        }
+
+        sbOnsong.append("{copyright: " + copyright + "}\n");
+
+        if (ccli != null) {
+            sbOnsong.append("{ccli: " + ccli + "}\n");
+        }
+
+        // System.out.println(sbOnsong.toString());
+
+        return sbOnsong.toString().replaceAll("/Newline/", "\n");
     }
 
     public String parse()
@@ -172,14 +206,17 @@ public class Song
         sbOnsong.append("/Newline/");
         for (Content c : content) {
             sbWiki.append(c.getContent(Parser.XWiki) + "\n");
-            sbOnsong.append(c.getContent(Parser.OnSong).trim() + "/Newline/");
+            sbOnsong.append(c.getContent(Parser.OnSong).trim().replace("\"", "'") + "/Newline/");
         }
 
         sbOnsong.append("{copyright: " + copyright + "}/Newline/");
-        sbOnsong.append("{ccli: " + ccli + "}/Newline/");
-        if (source != null) {
-            sbOnsong.append(source + "/Newline/");
+
+        if (ccli != null) {
+            sbOnsong.append("{ccli: " + ccli + "}/Newline/");
         }
+        // if (source != null) {
+        // sbOnsong.append(source + "/Newline/");
+        // }
 
         VelocityContext context = new VelocityContext();
         context.put("content", sbWiki.toString());
@@ -197,7 +234,14 @@ public class Song
         context.put("number", number);
         context.put("copyright", copyright);
         context.put("ccli", ccli);
-        context.put("source", source);
+
+        if (source != null) {
+            if ((!source.equals("")) && source.startsWith("http")) {
+                context.put("source", "[[" + source + ">>" + source + "]]");
+            } else {
+                context.put("source", source);
+            }
+        }
 
         String result = "";
         try {
@@ -205,8 +249,6 @@ public class Song
             ve.init();
             StringWriter writer = new StringWriter();
             StringBuilder template = new StringBuilder();
-
-            // System.out.println("X: "+chordScale);
 
             double scale = chordScale;
             if (scale <= 0.0) {
@@ -216,19 +258,12 @@ public class Song
             template.append("{{velocity}}\n");
             template.append("$xwiki.ssfx.use(\"js/xwiki/lyrics/lyrics.css\")\n");
             template.append("{{/velocity}}\n");
-
-            // template.append("\n{{html}}\n");
-            // template.append("<form><button class=\"noPrint\" style=\"float: right;\" title=\"Download OnSong\" type=\"submit\" name=\"onsong\" value=\""
-            // + sbOnsong.toString()
-            // + "\"><img src=\"../../../resources/icons/silk/page_go.png\" alt=\"OnSong\"></button></form>\n");
-            // template.append("{{/html}}\n");
-
-            template.append("\n{{html clean=\"false\"}}\n");
-            template.append("#if (\"$!subtitle\" == \"\")\n");
-            template.append("#else\n");
+            template.append("\n{{html clean=\"false\" wiki=\"true\"}}\n");
+            // template.append("#if (\"$!subtitle\" == \"\")\n");
+            // template.append("#else\n");
             // template.append("  **$subtitle**\n");
-            template.append("<div class=\"lyrics_subtitle\">$subtitle</div><br/>\n");
-            template.append("#end\n");
+            // template.append("<div class=\"lyrics_subtitle\">$subtitle</div><br/>\n");
+            // template.append("#end\n");
 
             // template.append("<div class=\"lyrics_info\">\n");
             template.append("<div class=\"lyrics_artist\">$artist</div>\n");
@@ -236,21 +271,47 @@ public class Song
                 .append("<div class=\"noPrint\" style=\"float: right;\"><form><button title=\"Download OnSong\" type=\"submit\" name=\"onsong\" value=\""
                     + sbOnsong.toString()
                     + "\"><img src=\"../../../resources/icons/silk/page_go.png\" alt=\"OnSong\"></button></form></div>\n");
-            template.append("<br/><div class=\"lyrics_score\">$score</div><br/>\n");
+            template.append("<br/><div class=\"lyrics_score\">$score</div><br/>");
+
             template.append("#if (\"$!capo\" == \"\")\n");
             template.append("#else\n");
-            template.append("<div class=\"lyrics_capo\">Capo: $capo</div>\n");
+            template.append("<div class=\"lyrics_capo\">Capo: $capo</div><br/>\n");
             // template.append("</div>\n");
             template.append("#end\n");
 
-            // System.out.println(scale);
-            template.append("<BR/><BR/>\n");
-            // template.append("{{/html}}\n");
-            // template.append("\n{{html clean=\"false\"}}\n");
+            if (melodies.size() > 0) {
+                template.append("<div class=\"noPrint\">\n");
+                boolean containsVideo = false;
+                String video = "";
+                for (int i = 0; i < melodies.size(); i++) {
+                    String melody = melodies.get(i);
+                    if (melody.startsWith("http")) {
+                        if (melody.contains(".youtube")) {
+                            containsVideo = true;
+                            video = video + "\n\n{{video url=\"" + melody + "\" width=\"200\"/}}\n\n";
+                        } else {
+                            template
+                                .append(" <img src=\"../../../resources/icons/silk/sound_none.png\" alt=\"Play\">[[Play>>"
+                                    + melody + "]]");
+                        }
+                    } else {
+                        template
+                            .append(" <img src=\"../../../resources/icons/silk/sound_none.png\" alt=\"Play\">[[Play>>attach:"
+                                + melody + "]]");
+                    }
+                    if ((i + 1) < melodies.size()) {
+                        template.append(" ");
+                    }
+
+                    if (containsVideo) {
+                        template.append("" + video + "\n");
+                    }
+                }
+                template.append("</div>\n");
+            }
             if (ShowFretEntity.VALUE) {
                 if (frets) {
-//                    System.out.println("show:" + ShowFretEntity.VALUE);
-//                    System.out.println("frets:" + frets);
+                    template.append("<BR/>\n");
                     for (Chord c : drawableChords) {
                         template.append("" + c.getDiagram(scale) + "\n");
                     }
@@ -265,12 +326,16 @@ public class Song
 
             template.append("<BR/>{{/html}}\n");
             template.append("$content\n");
-            template.append(",,$!copyright,,\n");
-            template.append("#if (\"$!ccli\" == \"\")\n");
-            template.append("#else\n");
-            template.append(",,CCLI: [[$!ccli>>http://de.songselect.com/songs/$!ccli/]],,\n");
-            template.append("#end\n");
-            template.append(",,$!source,,\n");
+            template.append(",,$!copyright,,");
+            template.append("#if(\"$!ccli\" == \"\")");
+            template.append("#else");
+            template.append(", ,,CCLI: [[$!ccli>>http://de.songselect.com/songs/$!ccli/]],,");
+            template.append("#end");
+
+            template.append("#if(\"$!source\" == \"\")");
+            template.append("#else");
+            template.append(", ,,$!source,,");
+            template.append("#end \n");
 
             try {
                 // Template t = ve.getTemplate("lyrics.vm");
@@ -495,12 +560,12 @@ public class Song
                             capo = new Integer(tokenizeContent(lineToken)).intValue();
                         } else if (token.startsWith("data_number") || token.startsWith("number")) {
                             number = tokenizeContent(lineToken);
-                        } else if ((token.equals("melody")) || (token.startsWith("mp3"))) {
+                        } else if ((token.equals("melody")) || (token.startsWith("mp3")) || token.startsWith("mp4")) {
                             String melodyFile = tokenizeContent(lineToken);
-                            melodyFiles.add(melodyFile);
-                        } else if ((token.equals("video")) || (token.startsWith("mp4"))) {
-                            String videoFile = tokenizeContent(lineToken);
-                            videoFiles.add(videoFile);
+                            melodies.add(melodyFile);
+                            // } else if ((token.equals("video")) || (token.startsWith("mp4"))) {
+                            // String videoFile = tokenizeContent(lineToken);
+                            // videoFiles.add(videoFile);
                         } else if ((token.equals("paragraph"))) {
                             ParagraphContent paragraph = new ParagraphContent();
                             paragraph.setContent(tokenizeContent(lineToken));

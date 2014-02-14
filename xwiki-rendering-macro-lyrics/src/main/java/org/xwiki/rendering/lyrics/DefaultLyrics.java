@@ -61,6 +61,8 @@ public class DefaultLyrics implements Lyrics {
 	
 	private String ccli;
 	
+	private String onsong;
+	
 	private int capo;
 	
 	private String copyright;
@@ -94,10 +96,18 @@ public class DefaultLyrics implements Lyrics {
 	public DefaultLyrics() {
 	}
 	
+	public String getOnSong() {
+        return onsong;
+    }
+	
 	public String getTitle() {
 		return title;
 	}
 
+	public void setOnSong(String onsong) {
+        this.onsong = onsong;
+    }
+	
 	public void setTitle(String title) {
 		this.title = title;
 	}

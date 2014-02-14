@@ -21,4 +21,6 @@ public interface Lyrics extends WikiComponent {
 	
 	public String getCopyright();
 	
+	public String getOnSong();
+	
 }

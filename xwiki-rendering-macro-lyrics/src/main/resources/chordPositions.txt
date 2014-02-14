@@ -587,6 +587,7 @@ E/H, E/B
 G/H, G/B
    {define: G/H base-fret 1 frets x 2 0 0 3 3 fingers - 2 - - 3 4}
    {define: G/H base-fret 1 frets x 2 0 0 0 3 fingers - 2 - - - 4}
+   {define: G/H base-fret 2 frets x 2 5 4 3 3 fingers - C 3 2 1 1}
 A/H, A/B
    {define: A/H base-fret 1 frets x 2 2 2 2 0 fingers - 1 2 3 4 -}
 D/H, D/B

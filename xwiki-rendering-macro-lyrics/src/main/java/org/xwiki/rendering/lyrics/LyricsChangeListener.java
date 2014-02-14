@@ -130,6 +130,8 @@ public class LyricsChangeListener implements EventListener {
 		obj.set("capo", song.getCapo() + "", context);
 		obj.set("copyright", song.getCopyright(), context);
 		obj.set("artist", song.getArtist(), context);
+//		System.out.println(song.getOnSong());
+		obj.set("onsong", song.getOnSong(), context);
 
 		if (!old.toXMLString().equals(obj.toXMLString())) {
 			try {
@@ -164,6 +166,7 @@ public class LyricsChangeListener implements EventListener {
 			obj.set("capo", song.getCapo() + "", context);
 			obj.set("copyright", song.getCopyright(), context);
 			obj.set("artist", song.getArtist(), context);
+			obj.set("onsong", song.getOnSong(), context);
 			context.getWiki().saveDocument(doc, context);
 		} catch (XWikiException e) {
 			e.printStackTrace();

@@ -85,6 +85,7 @@ public class LyricsClassBuilder implements WikiComponentBuilder {
 
 					}
 					n.setCopyright(obj.getStringValue("copyright"));
+					n.setOnSong(obj.getStringValue("onsong"));
 					n.setAuthorReference(doc.getAuthorReference());
 					n.setRoleHint(roleHint);
 					n.setDocumentReference(reference);
