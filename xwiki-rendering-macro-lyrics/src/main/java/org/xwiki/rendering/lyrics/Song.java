@@ -544,7 +544,10 @@ public class Song
                         } else if (token.equals("bible")) {
                             bibleVerses.add(tokenizeContent(lineToken));
                         } else if (token.equals("ccli")) {
-                            ccli = new Long(tokenizeContent(lineToken));
+                            try {
+                                ccli = new Long(tokenizeContent(lineToken));
+                            } catch (NumberFormatException ex) {
+                            }
                         } else if ((token.equals("st")) || (token.equals("su")) || (token.startsWith("subti"))) {
                             subtitle = tokenizeContent(lineToken);
                         } else if ((token.equals("url")) || (token.startsWith("source"))) {
