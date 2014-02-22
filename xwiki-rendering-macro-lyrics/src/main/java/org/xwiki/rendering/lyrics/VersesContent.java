@@ -35,7 +35,7 @@ public class VersesContent implements Content
                         result.append("["+sequence.getName()+"]"+sequence.getVerse().trim()+" ");
                     }
                 }
-                return result.toString();
+                return result.toString().replace(" [", "[");
             }
         } else {
 

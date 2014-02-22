@@ -296,6 +296,8 @@ Gmaj7/E
    {define: Gmaj7/E base-fret 1 frets 0 2 0 0 0 2 fingers - 1 - - - 2}
 Cmaj7/D
    {define: Cmaj7/D base-fret 5 frets x 5 5 5 5 7 fingers - 1 1 1 1 2}
+Cmaj7/G
+   {define: Cmaj7/G base-fret 1 frets 3 3 2 0 0 0 fingers 2 3 1 - - -}
 Cmaj7/E
    {define: Cmaj7/E base-fret 1 frets 0 3 2 0 0 0 fingers - 1 2 - - -}
    {define: Cmaj7/E base-fret 1 frets 0 2 2 0 1 0 fingers - 2 3 - 1 -}

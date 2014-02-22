@@ -203,16 +203,16 @@ public class Song
             sbOnsong.append("{capo: " + capo + "}/Newline/");
         }
 
-        sbOnsong.append("/Newline/");
+        sbOnsong.append(" /Newline/");
         for (Content c : content) {
             sbWiki.append(c.getContent(Parser.XWiki) + "\n");
-            sbOnsong.append(c.getContent(Parser.OnSong).trim().replace("\"", "'") + "/Newline/");
+            sbOnsong.append(c.getContent(Parser.OnSong).trim().replace("\"", "'") + " /Newline/");
         }
 
-        sbOnsong.append("{copyright: " + copyright + "}/Newline/");
+        sbOnsong.append("{copyright: " + copyright + "} /Newline/");
 
         if (ccli != null) {
-            sbOnsong.append("{ccli: " + ccli + "}/Newline/");
+            sbOnsong.append("{ccli: " + ccli + "} /Newline/");
         }
         // if (source != null) {
         // sbOnsong.append(source + "/Newline/");

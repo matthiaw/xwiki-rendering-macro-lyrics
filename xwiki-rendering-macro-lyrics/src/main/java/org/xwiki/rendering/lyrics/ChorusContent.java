@@ -27,11 +27,11 @@ public class ChorusContent implements Content
         if (parser == Parser.OnSong) {
             StringBuilder result = new StringBuilder();
             if (chorus != null) {
-                result.append("{soc}/Newline/");
+                result.append("{soc}/Newline/ ");
                 for (Content content : chorus) {
-                    result.append(content.getContent(parser) + "/Newline/");
+                    result.append(content.getContent(parser) + "/Newline/ ");
                 }
-                result.append("{eoc}/Newline/");
+                result.append("{eoc}/Newline/ ");
                 return result.toString();
             }
         } else {
