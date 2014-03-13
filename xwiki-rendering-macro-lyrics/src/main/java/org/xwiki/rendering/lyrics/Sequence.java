@@ -15,7 +15,21 @@ public class Sequence {
 		return name;
 	}
 	
-	public String getName() {
+	private boolean nogap = false;
+	
+	
+	
+	public boolean hasNoGap()
+    {
+        return nogap;
+    }
+
+    public void setNoGap(boolean nogap)
+    {
+        this.nogap = nogap;
+    }
+
+    public String getName() {
 		String tname = name;
 		if (name.contains(":")) {
 			tname = name.substring(0, name.indexOf(":")).trim();

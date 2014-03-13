@@ -30,12 +30,27 @@ public class VersesContent implements Content
                 
                 for (Sequence sequence : sequences) {
                     if (sequence.getName().trim().equals("")) {
-                        result.append(sequence.getVerse().trim()+" ");   
+                        if (sequence.hasNoGap()==true) {
+                            result.append(""+sequence.getVerse().trim()+"");
+                        } else {
+                            result.append(""+sequence.getVerse().trim()+" ");
+                        }
                     } else {
-                        result.append("["+sequence.getName()+"]"+sequence.getVerse().trim()+" ");
+                        
+                        if (sequence.hasNoGap()==true) {
+                            result.append("["+sequence.getName()+"]"+sequence.getVerse().trim()+"");   
+                        } else {
+                            result.append("["+sequence.getName()+"]"+sequence.getVerse().trim()+" ");
+                        }
+                        
                     }
                 }
-                return result.toString().replace(" [", "[");
+                
+//                String space = " ";
+                
+                
+                
+                return result.toString();//.replace(space+"[", "[");
             }
         } else {
 
@@ -48,7 +63,13 @@ public class VersesContent implements Content
                 for (Sequence sequence : sequences) {
                     if (!((sequence.getName().trim().equals("")) && (sequence.getVerse().trim().equals("")))) {
                         if (sequence.getName().trim().equals("")) {
-                            String verse = sequence.getVerse().trim() + " ";
+                            String verse = "";
+                            if (sequence.hasNoGap()==true) {
+                                verse = sequence.getVerse().trim() + "";
+                            } else {
+                                verse = sequence.getVerse().trim() + " ";
+                            }
+                            
                             chords.append("|(% class=\"lyrics_chords\" %)");
                             verses.append("|(% class=\"lyrics_verses\" %)" + verse);
                         } else {
