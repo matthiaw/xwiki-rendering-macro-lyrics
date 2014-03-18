@@ -611,7 +611,7 @@ public class Song
                             
                             while (charAtIndex != 65535) {
                                 
-                                System.out.println(charOnePosBeforeIndex+"-"+charAtIndex);
+//                                System.out.println(charOnePosBeforeIndex+"-"+charAtIndex);
 
                                 if (charAtIndex == '[') {
                                     indexStartChord = indexChar + 1;
@@ -622,7 +622,7 @@ public class Song
                                         c.setVerse(preText);
 
                                         if (charAtIndex=='[' && charOnePosBeforeIndex != ' ') {
-                                            System.out.println("No GAP in Text '"+preText+"' without Chord!");
+//                                            System.out.println("No GAP in Text '"+preText+"' without Chord!");
                                             c.setNoGap(true);
                                         }
                                         
@@ -660,7 +660,7 @@ public class Song
                                     lastChordHolder.setVerse(lastWord);
                                     
                                     if (charAtIndex=='[' && charOnePosBeforeIndex != ' ') {
-                                        System.out.println("No GAP in Text '"+lastWord+"' with Chord!");
+//                                        System.out.println("No GAP in Text '"+lastWord+"' with Chord!");
                                         lastChordHolder.setNoGap(true);
                                     }
                                     
