@@ -759,6 +759,7 @@ public class Song
             if (fretPos<=1) {
                 chord = chordFamily.getFirstChord();
                 
+                //Changed!
                 if (this.capo != 0) {
                     Chord capoChord = ChordFamilys.getChordForCapoPattern(chord, capo);
                     if (capoChord == null) {
