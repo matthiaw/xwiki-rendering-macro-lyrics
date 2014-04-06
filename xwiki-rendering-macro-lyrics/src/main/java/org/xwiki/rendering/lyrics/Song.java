@@ -756,12 +756,21 @@ public class Song
 
         if (chordFamily != null) {
             Chord chord = null;
-            if (fretPos == 1) {
+            if (fretPos<=1) {
                 chord = chordFamily.getFirstChord();
-                // System.out.println("FirstChord '"+chord.getFamily().getFamilyName()+"': "+chord.getFretPositionBase());
+                
+                if (this.capo != 0) {
+                    Chord capoChord = ChordFamilys.getChordForCapoPattern(chord, capo);
+                    if (capoChord == null) {
+                    	chord = chordFamily.getChordOnFret(fretPos);
+                    	if (chord == null) {
+                            chord = chordFamily.getFirstChord();
+                    	}
+                    }
+                }
+                
             } else {
                 chord = chordFamily.getChordOnFret(fretPos);
-                // System.out.println("FretChord '"+chord.getFamily().getFamilyName()+"': "+chord.getFretPositionBase());
                 if (chord == null) {
                     chord = chordFamily.getFirstChord();
                     if (showMissingChordsOnSpecificFret) {

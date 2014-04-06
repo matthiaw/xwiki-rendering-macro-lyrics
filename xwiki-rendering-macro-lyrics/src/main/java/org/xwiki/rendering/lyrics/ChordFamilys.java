@@ -40,8 +40,12 @@ public class ChordFamilys {
 			for (ChordFamily fam : list) {
 				if (!family.getCalculatedName().equals(fam.getCalculatedName())) {
 					for (Chord c : fam.getChords()) {
+						//if (family.getCalculatedName().contains("A-Major")) {
+						//   System.out.println("Searching "+fam.getCalculatedName()+" for "+family.getCalculatedName()+" on "+fret+": "+chord.getNotes()+":"+chord.toChordProString()+"=="+c.getNotesTransposed(fret)+":"+chord.toChordProString());
+						//}
 						if (chord.getNotes().equals(c.getNotesTransposed(fret))) {
 							foundOnes.add(c);
+							//System.out.println("Found on "+fret+": "+chord.getNotes());
 						}
 					}
 				}

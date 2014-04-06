@@ -265,6 +265,20 @@ public class Chord implements Comparable {
 		return new Integer(fretBase).intValue();
 	}
 
+	public int getFretMin() {
+		int min = 30;
+		
+		min = Math.min(min, this.getFretPosition1_e1());
+		min = Math.min(min, this.getFretPosition2_h());
+		min = Math.min(min, this.getFretPosition3_g());
+		min = Math.min(min, this.getFretPosition4_d());
+		min = Math.min(min, this.getFretPosition5_A());
+		min = Math.min(min, this.getFretPosition6_E());
+//		min = Math.min(min, this.getFretPositionBase());
+		
+		return min;
+	}
+	
 	public int getFretPosition6_E() {
 		if (!fret6_E.toLowerCase().equals("x")) {
 			return new Integer(fret6_E).intValue();
@@ -400,7 +414,7 @@ public class Chord implements Comparable {
 
 		// draw Bund
 		result.append("  ctx.lineWidth = 3;\n");
-		if (this.getFretPositionBase() == 1) {
+		if (this.getFretPositionBase() <= 1) {
 			result.append(drawLine(left_border, upper_border, (width - right_border), upper_border));
 		}
 
@@ -421,8 +435,10 @@ public class Chord implements Comparable {
 			result.append(draw(5, Constants.notes_e1));
 
 			result.append("  ctx.font = 'bold 18pt Arial';\n");
-			result.append("  var textWidth = ctx.measureText('" + getFretPositionBase() + "').width;\n");
-			result.append("  ctx.fillText('" + getFretPositionBase() + "', " + left_border / 2 + "-textWidth, " + (upper_border + fretSpace / 2 + 9) + ");\n");
+			if (getFretPositionBase()!=0) {
+				result.append("  var textWidth = ctx.measureText('" + getFretPositionBase() + "').width;\n");
+				result.append("  ctx.fillText('" + getFretPositionBase() + "', " + left_border / 2 + "-textWidth, " + (upper_border + fretSpace / 2 + 9) + ");\n");
+			}
 		}
 
 		result.append("</script>\n");
@@ -484,7 +500,13 @@ public class Chord implements Comparable {
 			result.append("  var textWidth = ctx.measureText('" + note + "').width;\n");
 			result.append("  ctx.fillText('" + note + "', " + circlePosX + "-textWidth/2, " + (upper_border + fretPos * fretSpace - fretSpace / 2 + textHeight / 2) + ");\n");
 
-			fretPos = fretPosString - this.getFretPositionBase();
+			int base = 1;
+			if (this.getFretPositionBase()<=1) {
+				base = 1;
+			} else {
+				base = this.getFretPositionBase();
+			}
+			fretPos = fretPosString - base;
 			if (fretPos < 0) {
 				fretPos = 0;
 			}
@@ -497,7 +519,7 @@ public class Chord implements Comparable {
 				result.append("  ctx.lineWidth = 1;\n");
 			} else {
 				if (fretPos == 0) {
-					if (this.getFretPositionBase() != 1) {
+					if (this.getFretPositionBase() > 1) {
 						fretPos += 1;
 						result.append(this.drawCircle(circlePosX, upper_border + fretPos * fretSpace - fretSpace / 2, fingerSize, "black", null));
 					} else {

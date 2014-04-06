@@ -17,7 +17,7 @@ public class ChordFamily {
 
 		Chord found = null;
 		for (Chord chord : chords) {
-			if (chord.getFretPositionBase() == fret) {
+			if ((found==null)&&(chord.getFretPositionBase() == fret)) {
 				Chord capoChord = ChordFamilys.getChordForCapoPattern(chord, fret);
 				if (capoChord != null) {
 					found = chord;
@@ -30,7 +30,7 @@ public class ChordFamily {
 
 		// Wenn spezifischer nicht gefunden, dann nächst höherer Akkord
 		for (Chord chord : chords) {
-			if (chord.getFretPositionBase() > fret) {
+			if ((found==null)&&(chord.getFretPositionBase() > fret)) {
 				Chord capoChord = ChordFamilys.getChordForCapoPattern(chord, fret);
 				if (capoChord != null) {
 					found = chord;
