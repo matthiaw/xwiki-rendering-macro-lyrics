@@ -188,7 +188,13 @@ public class Song {
 
 		sbOnsong.append(" /Newline/");
 		for (Content c : content) {
-			sbWiki.append(c.getContent(Parser.XWiki) + "\n");
+			
+		//	if (c instanceof VersesContent) {
+		//		sbWiki.append(c.getContent(Parser.XWiki) + "");
+			//} else {
+				sbWiki.append(c.getContent(Parser.XWiki) + "\n");	
+			//}
+			
 			sbOnsong.append(c.getContent(Parser.OnSong).trim()
 					.replace("\"", "'")
 					+ " /Newline/");
@@ -240,6 +246,7 @@ public class Song {
 			template.append("{{velocity}}\n");
 			template.append("$xwiki.ssfx.use(\"js/xwiki/lyrics/lyrics.css\")\n");
 			template.append("{{/velocity}}\n");
+			//template.append("\n{{translation/}}\n");
 			template.append("\n{{html clean=\"false\" wiki=\"true\"}}\n");
 			// template.append("#if (\"$!subtitle\" == \"\")\n");
 			// template.append("#else\n");
@@ -249,15 +256,15 @@ public class Song {
 
 			template.append("<div class=\"lyrics_artist\">$artist</div>\n");
 
-			boolean useGoogleTranslate = true;
-			if (useGoogleTranslate) {
-				template.append("<div class=\"noPrint\" style=\"float:right;\" id=\"google_translate_element\"></div><script type=\"text/javascript\">\n"
-						+ "function googleTranslateElementInit() {\n"
-						+ "new google.translate.TranslateElement({pageLanguage: 'de', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false}, 'google_translate_element');\n"
-						+ "}\n"
-						+ "</script><script type=\"text/javascript\" src=\"//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit\"></script>");
-			}
-
+//			boolean useGoogleTranslate = true;
+//			if (useGoogleTranslate) {
+//				template.append("<div class=\"noPrint\" style=\"float:right;\" id=\"google_translate_element\"><script type=\"text/javascript\">\n"
+//						+ "function googleTranslateElementInit() {\n"
+//						+ "new google.translate.TranslateElement({pageLanguage: 'de', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false}, 'google_translate_element');\n"
+//						+ "}\n"
+//						+ "</script>\n<script type=\"text/javascript\" src=\"//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit\"></script></div>");
+//			}
+			
 			template.append("<div class=\"noPrint\" style=\"float: right;\"><form><button title=\"Download OnSong\" type=\"submit\" name=\"onsong\" value=\""
 					+ sbOnsong.toString()
 					+ "\"><img src=\"../../../resources/icons/silk/page_go.png\" alt=\"OnSong\"></button></form></div>\n");

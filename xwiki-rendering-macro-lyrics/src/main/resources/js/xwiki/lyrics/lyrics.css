@@ -1,4 +1,9 @@
 /* -----------------Lyrics Macro-----------------------*/
+table.lyrics {
+  border: 0px;
+  margin: 2px 0px;
+}
+
 #content table.lyrics {
   border: 0px;
   display: inline;
