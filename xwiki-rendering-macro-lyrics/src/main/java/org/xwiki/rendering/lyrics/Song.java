@@ -20,6 +20,8 @@ public class Song {
 
 	private String artist;
 
+	private boolean hidecapochords = false;
+
 	private String copyright;
 
 	private String subtitle;
@@ -90,6 +92,8 @@ public class Song {
 
 	private String title;
 
+	private String score;
+
 	private int capo;
 
 	private Long ccli;
@@ -143,9 +147,7 @@ public class Song {
 
 		sbOnsong.append("\n");
 		for (Content c : content) {
-			sbOnsong.append(c.getContent(Parser.OnSong).trim()
-					.replace("\"", "'")
-					+ "\n");
+			sbOnsong.append(c.getContent(Parser.OnSong).trim().replace("\"", "'") + "\n");
 		}
 
 		sbOnsong.append("{copyright: " + copyright + "}\n");
@@ -173,8 +175,7 @@ public class Song {
 
 		if (number != null) {
 			if (!number.isEmpty()) {
-				sbOnsong.append("{title: " + title + " (" + number
-						+ ")}/Newline/");
+				sbOnsong.append("{title: " + title + " (" + number + ")}/Newline/");
 			}
 		}
 
@@ -188,16 +189,14 @@ public class Song {
 
 		sbOnsong.append(" /Newline/");
 		for (Content c : content) {
-			
-		//	if (c instanceof VersesContent) {
-		//		sbWiki.append(c.getContent(Parser.XWiki) + "");
-			//} else {
-				sbWiki.append(c.getContent(Parser.XWiki) + "\n");	
-			//}
-			
-			sbOnsong.append(c.getContent(Parser.OnSong).trim()
-					.replace("\"", "'")
-					+ " /Newline/");
+
+			// if (c instanceof VersesContent) {
+			// sbWiki.append(c.getContent(Parser.XWiki) + "");
+			// } else {
+			sbWiki.append(c.getContent(Parser.XWiki) + "\n");
+			// }
+
+			sbOnsong.append(c.getContent(Parser.OnSong).trim().replace("\"", "'") + " /Newline/");
 		}
 
 		sbOnsong.append("{copyright: " + copyright + "} /Newline/");
@@ -246,7 +245,7 @@ public class Song {
 			template.append("{{velocity}}\n");
 			template.append("$xwiki.ssfx.use(\"js/xwiki/lyrics/lyrics.css\")\n");
 			template.append("{{/velocity}}\n");
-			//template.append("\n{{translation/}}\n");
+			// template.append("\n{{translation/}}\n");
 			template.append("\n{{html clean=\"false\" wiki=\"true\"}}\n");
 			// template.append("#if (\"$!subtitle\" == \"\")\n");
 			// template.append("#else\n");
@@ -256,19 +255,29 @@ public class Song {
 
 			template.append("<div class=\"lyrics_artist\">$artist</div>\n");
 
-//			boolean useGoogleTranslate = true;
-//			if (useGoogleTranslate) {
-//				template.append("<div class=\"noPrint\" style=\"float:right;\" id=\"google_translate_element\"><script type=\"text/javascript\">\n"
-//						+ "function googleTranslateElementInit() {\n"
-//						+ "new google.translate.TranslateElement({pageLanguage: 'de', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false}, 'google_translate_element');\n"
-//						+ "}\n"
-//						+ "</script>\n<script type=\"text/javascript\" src=\"//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit\"></script></div>");
-//			}
-			
+			// boolean useGoogleTranslate = true;
+			// if (useGoogleTranslate) {
+			// template.append("<div class=\"noPrint\" style=\"float:right;\" id=\"google_translate_element\"><script type=\"text/javascript\">\n"
+			// + "function googleTranslateElementInit() {\n"
+			// +
+			// "new google.translate.TranslateElement({pageLanguage: 'de', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false}, 'google_translate_element');\n"
+			// + "}\n"
+			// +
+			// "</script>\n<script type=\"text/javascript\" src=\"//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit\"></script></div>");
+			// }
+
 			template.append("<div class=\"noPrint\" style=\"float: right;\"><form><button title=\"Download OnSong\" type=\"submit\" name=\"onsong\" value=\""
-					+ sbOnsong.toString()
-					+ "\"><img src=\"../../../resources/icons/silk/page_go.png\" alt=\"OnSong\"></button></form></div>\n");
-			template.append("<br/><div class=\"lyrics_score\">$score</div><br/>");
+					+ sbOnsong.toString() + "\"><img src=\"../../../resources/icons/silk/page_go.png\" alt=\"OnSong\"></button></form></div>\n");
+
+			if (score != null) {
+				if (!score.equals("")) {
+					template.append("<br/><div class=\"lyrics_score\">" + score + "</div><br/>");
+				} else {
+					template.append("<br/><div class=\"lyrics_score\">$score</div><br/>");
+				}
+			} else {
+				template.append("<br/><div class=\"lyrics_score\">$score</div><br/>");
+			}
 
 			template.append("#if (\"$!capo\" == \"\")\n");
 			template.append("#else\n");
@@ -280,8 +289,7 @@ public class Song {
 
 				for (int i = 0; i < notes.size(); i++) {
 					String note = notes.get(i);
-					template.append(" <img src=\"../../../resources/icons/silk/music.png\" alt=\"Notes\"> [[Notes>>attach:"
-							+ note + "]]");
+					template.append(" <img src=\"../../../resources/icons/silk/music.png\" alt=\"Notes\"> [[Notes>>attach:" + note + "]]");
 					if ((i + 1) < notes.size()) {
 						template.append(" ");
 					}
@@ -299,17 +307,13 @@ public class Song {
 					if (melody.startsWith("http")) {
 						if (melody.contains(".youtube")) {
 							containsVideo = true;
-							video = video + "\n\n{{video url=\"" + melody
-									+ "\" width=\"200\"/}}\n\n";// +
-							template.append(" <img src=\"../../../resources/icons/silk/sound_none.png\" alt=\"Play\">[[Play>>"
-									+ melody + "]]");
+							video = video + "\n\n{{video url=\"" + melody + "\" width=\"200\"/}}\n\n";// +
+							template.append(" <img src=\"../../../resources/icons/silk/sound_none.png\" alt=\"Play\">[[Play>>" + melody + "]]");
 						} else {
-							template.append(" <img src=\"../../../resources/icons/silk/sound_none.png\" alt=\"Play\">[[Play>>"
-									+ melody + "]]");
+							template.append(" <img src=\"../../../resources/icons/silk/sound_none.png\" alt=\"Play\">[[Play>>" + melody + "]]");
 						}
 					} else {
-						template.append(" <img src=\"../../../resources/icons/silk/sound_none.png\" alt=\"Play\">[[Play>>attach:"
-								+ melody + "]]");
+						template.append(" <img src=\"../../../resources/icons/silk/sound_none.png\" alt=\"Play\">[[Play>>attach:" + melody + "]]");
 					}
 					if ((i + 1) < melodies.size()) {
 						template.append(" ");
@@ -331,8 +335,11 @@ public class Song {
 					if (drawableCapoChords.size() > 0) {
 						template.append("<BR/>\n");
 					}
-					for (Chord c : drawableCapoChords) {
-						template.append("" + c.getDiagram(scale) + "\n");
+
+					if (!hidecapochords) {
+						for (Chord c : drawableCapoChords) {
+							template.append("" + c.getDiagram(scale) + "\n");
+						}
 					}
 				}
 			}
@@ -349,39 +356,20 @@ public class Song {
 
 			if (ccli != null) {
 				if (ccli.intValue() != 0) {
-					String ccliString = "\n{{html}}\n<script>\n"
-							+ "if (navigator.userAgent.match(/Android/i)\n"
-							+ "|| navigator.userAgent.match(/webOS/i)\n"
-							+ "|| navigator.userAgent.match(/iPhone/i)\n"
-							+ "|| navigator.userAgent.match(/iPad/i)\n"
-							+ "|| navigator.userAgent.match(/iPod/i)\n"
-							+ "|| navigator.userAgent.match(/BlackBerry/i)\n"
-							+ "|| navigator.userAgent.match(/Windows Phone/i)){\n"
-							+ " document.write(\"<sub>"
-							+ copyright
-							+ ss
-							+ ", CCLI: <a href='http://mobile.songselect.com/songs/"
-							+ ccli.longValue()
-							+ "/'>"
-							+ ccli.longValue()
-							+ "</a></sub>\");\n"
-							+ "} else {\n"
-							+ " document.write(\"<sub>"
-							+ copyright
-							+ ss
-							+ ", CCLI: <a href='http://de.songselect.com/songs/"
-							+ ccli.longValue() + "/'>" + ccli.longValue()
-							+ "</a></sub>\");\n" + "}\n"
-							+ "</script>\n\n{{/html}}\n\n";
+					String ccliString = "\n{{html}}\n<script>\n" + "if (navigator.userAgent.match(/Android/i)\n" + "|| navigator.userAgent.match(/webOS/i)\n"
+							+ "|| navigator.userAgent.match(/iPhone/i)\n" + "|| navigator.userAgent.match(/iPad/i)\n"
+							+ "|| navigator.userAgent.match(/iPod/i)\n" + "|| navigator.userAgent.match(/BlackBerry/i)\n"
+							+ "|| navigator.userAgent.match(/Windows Phone/i)){\n" + " document.write(\"<sub>" + copyright + ss
+							+ ", CCLI: <a href='http://mobile.songselect.com/songs/" + ccli.longValue() + "/'>" + ccli.longValue() + "</a></sub>\");\n"
+							+ "} else {\n" + " document.write(\"<sub>" + copyright + ss + ", CCLI: <a href='http://de.songselect.com/songs/" + ccli.longValue()
+							+ "/'>" + ccli.longValue() + "</a></sub>\");\n" + "}\n" + "</script>\n\n{{/html}}\n\n";
 					template.append(ccliString);
 				} else {
-					String s = "\n\n\n{{html}}\n\n" + "<sub>" + copyright + ss
-							+ "</sub>" + "\n{{/html}}\n\n";
+					String s = "\n\n\n{{html}}\n\n" + "<sub>" + copyright + ss + "</sub>" + "\n{{/html}}\n\n";
 					template.append(s);
 				}
 			} else {
-				String s = "\n\n\n{{html}}\n\n" + "<sub>" + copyright + ss
-						+ "</sub>" + "\n{{/html}}\n\n";
+				String s = "\n\n\n{{html}}\n\n" + "<sub>" + copyright + ss + "</sub>" + "\n{{/html}}\n\n";
 				template.append(s);
 			}
 
@@ -394,8 +382,7 @@ public class Song {
 				template.append("#set($content=$request.getParameter(\"onsong\"))\n");
 				template.append("$response.setContentType(\"text/plain\");\n");
 				template.append("$response.setCharacterEncoding('UTF-8')\n");
-				template.append("$response.setHeader(\"Content-Disposition\", \"attachment; filename="
-						+ simpleTokenReplace(title) + ".txt\");\n");
+				template.append("$response.setHeader(\"Content-Disposition\", \"attachment; filename=" + simpleTokenReplace(title) + ".txt\");\n");
 				template.append("$response.writer.print($content.replace(\"/Newline/\", \"\n");
 				template.append("\"))\n");
 				template.append("$context.setFinished(true);\n");
@@ -498,8 +485,7 @@ public class Song {
 		int max = 0;
 		String key = "";
 		for (int i = 0; i < 12; i++) {
-			String majorScale = " "
-					+ getScale(Constants.notesInDetail[i], true) + " ";
+			String majorScale = " " + getScale(Constants.notesInDetail[i], true) + " ";
 
 			int noteCounter = 0;
 			for (String note : getNotesInChords()) {
@@ -512,8 +498,7 @@ public class Song {
 				key = Constants.notesInDetail[i] + "-Dur";
 			}
 
-			String minorScale = " "
-					+ getScale(Constants.notesInDetail[i], false) + " ";
+			String minorScale = " " + getScale(Constants.notesInDetail[i], false) + " ";
 
 			noteCounter = 0;
 			for (String note : getNotesInChords()) {
@@ -534,11 +519,9 @@ public class Song {
 	private ArrayList<String> getNotesInChords() {
 		ArrayList<String> notesInChords = new ArrayList<String>();
 		for (Sequence chord : chords) {
-			ChordFamily chordInfo = ChordFamilys
-					.getChordFamily(chord.getName());
+			ChordFamily chordInfo = ChordFamilys.getChordFamily(chord.getName());
 			if (chordInfo != null) {
-				StringTokenizer st = new StringTokenizer(chordInfo
-						.getFirstChord().getNotes(), " ");
+				StringTokenizer st = new StringTokenizer(chordInfo.getFirstChord().getNotes(), " ");
 				while (st.hasMoreTokens()) {
 					String note = st.nextToken();
 					if (!notesInChords.contains(note.trim())) {
@@ -557,8 +540,7 @@ public class Song {
 	}
 
 	private void load(String song) {
-		LineNumberReader lineNumberReader = new LineNumberReader(
-				new StringReader(song));
+		LineNumberReader lineNumberReader = new LineNumberReader(new StringReader(song));
 
 		boolean isChorus = false;
 
@@ -572,14 +554,12 @@ public class Song {
 
 						ArrayList<Sequence> chordsInLine = new ArrayList<Sequence>();
 
-						StringTokenizer lineToken = new StringTokenizer(line,
-								"{:}\n");
+						StringTokenizer lineToken = new StringTokenizer(line, "{:}\n");
 						String token = lineToken.nextToken().toLowerCase();
 
 						if ((token.equals("art")) || (token.equals("artist"))) {
 							artist = tokenizeContent(lineToken);
-						} else if ((token.equals("copy"))
-								|| (token.equals("copyright"))) {
+						} else if ((token.equals("copy")) || (token.equals("copyright"))) {
 							copyright = tokenizeContent(lineToken);
 						} else if (token.equals("bible")) {
 							bibleVerses.add(tokenizeContent(lineToken));
@@ -588,32 +568,27 @@ public class Song {
 								ccli = new Long(tokenizeContent(lineToken));
 							} catch (NumberFormatException ex) {
 							}
-						} else if ((token.equals("st")) || (token.equals("su"))
-								|| (token.startsWith("subti"))) {
+						} else if ((token.equals("st")) || (token.equals("su")) || (token.startsWith("subti"))) {
 							subtitle = tokenizeContent(lineToken);
-						} else if ((token.equals("url"))
-								|| (token.startsWith("source"))) {
+						} else if ((token.equals("url")) || (token.startsWith("source"))) {
 							source = tokenizeContent(lineToken);
-						} else if ((token.equals("guitarpro"))
-								|| (token.startsWith("gp6"))) {
+						} else if ((token.equals("guitarpro")) || (token.startsWith("gp6"))) {
 							guitarPro = tokenizeContent(lineToken);
 						} else if ((token.equals("notes"))) {
 							String note = tokenizeContent(lineToken);
 							notes.add(note);
+						} else if ((token.equals("hidecapochords"))) {
+							hidecapochords = true;
+						} else if ((token.equals("score"))) {
+							score = tokenizeContent(lineToken);
 						} else if ((token.equals("scale"))) {
-							chordScale = Double
-									.parseDouble(tokenizeContent(lineToken));
+							chordScale = Double.parseDouble(tokenizeContent(lineToken));
 							System.out.println("Load: " + chordScale);
-						} else if (token.startsWith("capo")
-								|| token.startsWith("kapo")) {
-							capo = new Integer(tokenizeContent(lineToken))
-									.intValue();
-						} else if (token.startsWith("data_number")
-								|| token.startsWith("number")) {
+						} else if (token.startsWith("capo") || token.startsWith("kapo")) {
+							capo = new Integer(tokenizeContent(lineToken)).intValue();
+						} else if (token.startsWith("data_number") || token.startsWith("number")) {
 							number = tokenizeContent(lineToken);
-						} else if ((token.equals("melody"))
-								|| (token.startsWith("mp3"))
-								|| token.startsWith("mp4")) {
+						} else if ((token.equals("melody")) || (token.startsWith("mp3")) || token.startsWith("mp4")) {
 							String melodyFile = tokenizeContent(lineToken);
 							melodies.add(melodyFile);
 						} else if ((token.equals("paragraph"))) {
@@ -621,38 +596,28 @@ public class Song {
 							paragraph.setContent(tokenizeContent(lineToken));
 							paragraph.setSong(this);
 							content.add(paragraph);
-						} else if ((token.equals("c"))
-								|| (token.startsWith("commen"))) {
+						} else if ((token.equals("c")) || (token.startsWith("commen"))) {
 							String c = tokenizeContent(lineToken);
 							CommentContent comment = new CommentContent();
 							comment.setContent(c);
 							comment.setSong(this);
 							content.add(comment);
-						} else if ((token.equals("t"))
-								|| (token.startsWith("title"))) {
+						} else if ((token.equals("t")) || (token.startsWith("title"))) {
 							title = tokenizeContent(lineToken);
-						} else if ((token.equals("newpage"))
-								|| (token.equals("np"))
-								|| (token.startsWith("newpag") || (token
-										.startsWith("new_pag")))) {
+						} else if ((token.equals("newpage")) || (token.equals("np")) || (token.startsWith("newpag") || (token.startsWith("new_pag")))) {
 							content.add(new NewpageContent());
-						} else if ((token.equals("soc"))
-								|| (token.startsWith("start_of_cho"))) {
+						} else if ((token.equals("soc")) || (token.startsWith("start_of_cho"))) {
 							isChorus = true;
-						} else if ((token.equals("eoc"))
-								|| (token.startsWith("end_of_cho"))) {
+						} else if ((token.equals("eoc")) || (token.startsWith("end_of_cho"))) {
 							content.add(new ChorusContent(chorusContent));
 							isChorus = false;
 							chorusContent = new ArrayList<Content>();
-						} else if ((token.equals("breakline"))
-								|| (token.equals("colb"))
-								|| (token.startsWith("column_break"))) {
+						} else if ((token.equals("breakline")) || (token.equals("colb")) || (token.startsWith("column_break"))) {
 							content.add(new BreaklineContent());
 						} else { // Song Line
 
 							line = "      " + line + "      ";
-							StringCharacterIterator stringCharacterIterator = new StringCharacterIterator(
-									line);
+							StringCharacterIterator stringCharacterIterator = new StringCharacterIterator(line);
 
 							char charAtIndex = stringCharacterIterator.first();
 							char charOnePosBeforeIndex = charAtIndex;
@@ -669,15 +634,12 @@ public class Song {
 								if (charAtIndex == '[') {
 									indexStartChord = indexChar + 1;
 
-									String preText = line.substring(0,
-											indexChar);
-									if (!(preText.contains("[") || preText
-											.contains("]"))) {
+									String preText = line.substring(0, indexChar);
+									if (!(preText.contains("[") || preText.contains("]"))) {
 										Sequence c = new Sequence("");
 										c.setVerse(preText);
 
-										if (charAtIndex == '['
-												&& charOnePosBeforeIndex != ' ') {
+										if (charAtIndex == '[' && charOnePosBeforeIndex != ' ') {
 											c.setNoGap(true);
 										}
 
@@ -687,8 +649,7 @@ public class Song {
 
 								if (charAtIndex == ']') {
 									int indexEndChord = indexChar;
-									String chord = line.substring(
-											indexStartChord, indexEndChord);
+									String chord = line.substring(indexStartChord, indexEndChord);
 									lastChord = chord;
 									indexStartWord = indexChar + 1;
 									wordFound = true;
@@ -696,32 +657,26 @@ public class Song {
 
 									chordsInLine.add(lastChordHolder);
 
-									if (!containsChord(lastChordHolder
-											.getName())) {
+									if (!containsChord(lastChordHolder.getName())) {
 										chords.add(lastChordHolder);
 									}
 									overallChords.add(lastChordHolder);
 
 								}
 
-								if (indexStartWord < indexChar
-										&& indexStartWord != -1
-										&& wordFound == true
-										&& (charAtIndex == '[' || (indexChar + 1 == line
-												.length()))) {
+								if (indexStartWord < indexChar && indexStartWord != -1 && wordFound == true
+										&& (charAtIndex == '[' || (indexChar + 1 == line.length()))) {
 									int indexEndWord = indexChar;
 									if (indexChar + 1 == line.length()) {
 										indexEndWord += 1;
 									}
-									String word = line.substring(
-											indexStartWord, indexEndWord);
+									String word = line.substring(indexStartWord, indexEndWord);
 									wordFound = false;
 									indexStartWord = -1;
 									lastWord = word;
 									lastChordHolder.setVerse(lastWord);
 
-									if (charAtIndex == '['
-											&& charOnePosBeforeIndex != ' ') {
+									if (charAtIndex == '[' && charOnePosBeforeIndex != ' ') {
 										lastChordHolder.setNoGap(true);
 									}
 
@@ -751,9 +706,7 @@ public class Song {
 									content.add(v);
 								}
 
-							} else if (!line.trim().equals("")
-									&& !(line.contains("{") || line
-											.contains("}"))) {
+							} else if (!line.trim().equals("") && !(line.contains("{") || line.contains("}"))) {
 								VerseContent v = new VerseContent();
 								v.setSong(this);
 								v.setContent(line.trim());
@@ -781,13 +734,11 @@ public class Song {
 
 			if (capo != 0) {
 				if (!chordInSequence.hasFretPos()) {
-					chordInSequence.setName(chordInSequence.getName() + ":"
-							+ capo);
+					chordInSequence.setName(chordInSequence.getName() + ":" + capo);
 				}
 			}
 
-			ChordFamily chord = ChordFamilys.getChordFamily(chordInSequence
-					.getName());
+			ChordFamily chord = ChordFamilys.getChordFamily(chordInSequence.getName());
 			if (chord == null) {
 				if (!containsMissedChord(chordInSequence.getName())) {
 					missedChords.add(chordInSequence);
@@ -823,8 +774,7 @@ public class Song {
 
 				// Changed!
 				if (this.capo != 0) {
-					Chord capoChord = ChordFamilys.getChordForCapoPattern(
-							chord, capo);
+					Chord capoChord = ChordFamilys.getChordForCapoPattern(chord, capo);
 					if (capoChord == null) {
 						chord = chordFamily.getChordOnFret(fretPos);
 						if (chord == null) {
@@ -838,23 +788,19 @@ public class Song {
 				if (chord == null) {
 					chord = chordFamily.getFirstChord();
 					if (showMissingChordsOnSpecificFret) {
-						System.out.println("Kein Akkord "
-								+ chordFamily.getFamilyName() + " auf Bund "
-								+ fretPos + " (Capo: " + capo
-								+ ") gefunden in Lied " + title + "!");
+						System.out.println("Kein Akkord " + chordFamily.getFamilyName() + " auf Bund " + fretPos + " (Capo: " + capo + ") gefunden in Lied "
+								+ title + "!");
 					}
 				}
 			}
 			drawableChords.add(chord);
 
 			if (this.capo != 0) {
-				Chord capoChord = ChordFamilys.getChordForCapoPattern(chord,
-						capo);
+				Chord capoChord = ChordFamilys.getChordForCapoPattern(chord, capo);
 				if (capoChord != null) {
 					drawableCapoChords.add(capoChord);
 				} else {
-					drawableCapoChords
-							.add(new Chord(chordName + ":" + fretPos));
+					drawableCapoChords.add(new Chord(chordName + ":" + fretPos));
 				}
 			}
 
