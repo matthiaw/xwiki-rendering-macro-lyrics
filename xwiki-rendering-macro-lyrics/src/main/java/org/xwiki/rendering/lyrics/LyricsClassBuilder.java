@@ -50,7 +50,8 @@ public class LyricsClassBuilder implements WikiComponentBuilder {
 		List<DocumentReference> references = new ArrayList<DocumentReference>();
 
 		try {
-			Query query = queryManager.createQuery("SELECT doc.space, doc.name FROM Document doc, doc.object(" + Constants.SPACE + "." + Lyrics.CLASS + "Class) AS obj", Query.XWQL);
+			Query query = queryManager.createQuery("SELECT doc.space, doc.name FROM Document doc, doc.object(" + Constants.SPACE + "." + Lyrics.CLASS
+					+ "Class) AS obj", Query.XWQL);
 			List<Object[]> results = query.execute();
 			for (Object[] result : results) {
 				references.add(new DocumentReference(getXWikiContext().getDatabase(), (String) result[0], (String) result[1]));
@@ -72,25 +73,27 @@ public class LyricsClassBuilder implements WikiComponentBuilder {
 
 			List<BaseObject> objects = doc.getXObjects(documentReference);
 
-			for (final BaseObject obj : objects) {
-				if (obj != null) {
-					String roleHint = serializer.serialize(obj.getReference());
-					DefaultLyrics n = new DefaultLyrics();
-					n.setTitle(obj.getStringValue("title"));
-					n.setCcli(obj.getStringValue("ccli"));
-					n.setArtist(obj.getStringValue("artist"));
-					try {
-						n.setCapo(Integer.valueOf(obj.getStringValue("capo")));
-					} catch (Exception e) {
+			if (objects != null) {
+				for (final BaseObject obj : objects) {
+					if (obj != null) {
+						String roleHint = serializer.serialize(obj.getReference());
+						DefaultLyrics n = new DefaultLyrics();
+						n.setTitle(obj.getStringValue("title"));
+						n.setCcli(obj.getStringValue("ccli"));
+						n.setArtist(obj.getStringValue("artist"));
+						try {
+							n.setCapo(Integer.valueOf(obj.getStringValue("capo")));
+						} catch (Exception e) {
 
+						}
+						n.setCopyright(obj.getStringValue("copyright"));
+						n.setOnSong(obj.getStringValue("onsong"));
+						n.setAuthorReference(doc.getAuthorReference());
+						n.setRoleHint(roleHint);
+						n.setDocumentReference(reference);
+						n.setDocument(doc);
+						components.add(n);
 					}
-					n.setCopyright(obj.getStringValue("copyright"));
-					n.setOnSong(obj.getStringValue("onsong"));
-					n.setAuthorReference(doc.getAuthorReference());
-					n.setRoleHint(roleHint);
-					n.setDocumentReference(reference);
-					n.setDocument(doc);
-					components.add(n);
 				}
 			}
 		} catch (Exception e) {

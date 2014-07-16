@@ -330,6 +330,9 @@ public class Song {
 				if (frets) {
 					template.append("<BR/>\n");
 					for (Chord c : drawableChords) {
+						
+//						c.getFamily().get
+						
 						template.append("" + c.getDiagram(scale) + "\n");
 					}
 					if (drawableCapoChords.size() > 0) {
@@ -350,7 +353,7 @@ public class Song {
 			String ss = "";
 			if (source != null) {
 				if (!source.equals("")) {
-					ss = ", " + source;
+					ss = "<BR/>" + source;
 				}
 			}
 
@@ -361,8 +364,8 @@ public class Song {
 							+ "|| navigator.userAgent.match(/iPod/i)\n" + "|| navigator.userAgent.match(/BlackBerry/i)\n"
 							+ "|| navigator.userAgent.match(/Windows Phone/i)){\n" + " document.write(\"<sub>" + copyright + ss
 							+ ", CCLI: <a href='http://mobile.songselect.com/songs/" + ccli.longValue() + "/'>" + ccli.longValue() + "</a></sub>\");\n"
-							+ "} else {\n" + " document.write(\"<sub>" + copyright + ss + ", CCLI: <a href='http://de.songselect.com/songs/" + ccli.longValue()
-							+ "/'>" + ccli.longValue() + "</a></sub>\");\n" + "}\n" + "</script>\n\n{{/html}}\n\n";
+							+ "} else {\n" + " document.write(\"<sub>" + copyright  + ", CCLI: <a href='http://de.songselect.com/songs/" + ccli.longValue()
+							+ "/'>" + ccli.longValue() + "</a></sub>\");\n" + "}\n" + "</script>"+ss+"\n\n{{/html}}\n\n";
 					template.append(ccliString);
 				} else {
 					String s = "\n\n\n{{html}}\n\n" + "<sub>" + copyright + ss + "</sub>" + "\n{{/html}}\n\n";
@@ -796,6 +799,7 @@ public class Song {
 			drawableChords.add(chord);
 
 			if (this.capo != 0) {
+				
 				Chord capoChord = ChordFamilys.getChordForCapoPattern(chord, capo);
 				if (capoChord != null) {
 					drawableCapoChords.add(capoChord);
