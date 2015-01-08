@@ -15,7 +15,7 @@ public class DefaultLyrics implements Lyrics {
 	private DocumentReference authorReference;
 
 	public XWikiDocument getDocument() {
-	    ShowFretEntity.VALUE = true;
+	    ShowFretEntity.VALUE = false;
 		return xwikiDocument;
 	}
 	

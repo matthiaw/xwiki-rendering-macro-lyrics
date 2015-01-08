@@ -24,6 +24,17 @@ import org.xwiki.properties.annotation.PropertyMandatory;
 
 public class LyricsIndexMacroParameters
 {
+	private String prefix;
+	
+	public String getPrefix() {
+		return prefix;
+	}
+
+	@PropertyDescription("Prefix of allowed Indexes")
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
+	}
+
 	private String mode;
 	
 	public String getMode()

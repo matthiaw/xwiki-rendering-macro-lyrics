@@ -22,6 +22,11 @@ public class Chord implements Comparable {
 		return n + this.fretBase + " " + this.getFamily().getCalculatedSymbol();
 	}
 
+	/**
+	 * Return true if one finger is marked as capo
+	 * 
+	 * @return boolean value if capo is needed in chord
+	 */
 	public boolean containsCapoAsFinger() {
 		if (this.finger1.equals("C")) {
 			return true;
@@ -44,18 +49,39 @@ public class Chord implements Comparable {
 		return false;
 	}
 
+	/**
+	 * Position of Fret-Base
+	 */
 	private int fretBase;
 
+	/**
+	 * Fret-Position of finger on String e1
+	 */
 	private String fret1_e1;
 
+	/**
+	 * Fret-Position of finger on String h
+	 */
 	private String fret2_h;
 
+	/**
+	 * Fret-Position of finger on String g
+	 */
 	private String fret3_g;
 
+	/**
+	 * Fret-Position of finger on String d
+	 */
 	private String fret4_d;
 
+	/**
+	 * Fret-Position of finger on String A
+	 */
 	private String fret5_A;
 
+	/**
+	 * Fret-Position of finger on String E
+	 */
 	private String fret6_E;
 
 	private String finger1;
@@ -70,9 +96,16 @@ public class Chord implements Comparable {
 
 	private String finger6;
 
+	/**
+	 * String of ChordPro-Format of Chord
+	 * 
+	 * @return Chord-Representation as String in ChordPro-Format
+	 */
 	public String toChordProString() {
-		return "{define: " + family.getFamilyName() + " base-fret " + fretBase + " frets " + getFretPositions() + " fingers " + finger6 + " " + finger5 + " " + finger4 + " " + finger3 + " " + finger2
-				+ " " + finger1 + "}";
+		return "{define: " + family.getFamilyName() + " base-fret " + fretBase
+				+ " frets " + getFretPositions() + " fingers " + finger6 + " "
+				+ finger5 + " " + finger4 + " " + finger3 + " " + finger2 + " "
+				+ finger1 + "}";
 	}
 
 	public String getBassNote() {
@@ -181,38 +214,26 @@ public class Chord implements Comparable {
 			int pos = getFretPosition6_E();
 			if (pos != -1) {
 				sb.append(Constants.notes_E[pos + halfnotesteps] + " ");
-			} else {
-				// sb.append("&nbsp;");
 			}
 			pos = getFretPosition5_A();
 			if (pos != -1) {
 				sb.append(Constants.notes_A[pos + halfnotesteps] + " ");
-			} else {
-				// sb.append(". ");
 			}
 			pos = getFretPosition4_d();
 			if (pos != -1) {
 				sb.append(Constants.notes_d[pos + halfnotesteps] + " ");
-			} else {
-				// sb.append(". ");
 			}
 			pos = getFretPosition3_g();
 			if (pos != -1) {
 				sb.append(Constants.notes_g[pos + halfnotesteps] + " ");
-			} else {
-				// sb.append(". ");
 			}
 			pos = getFretPosition2_h();
 			if (pos != -1) {
 				sb.append(Constants.notes_h[pos + halfnotesteps] + " ");
-			} else {
-				// sb.append(". ");
 			}
 			pos = getFretPosition1_e1();
 			if (pos != -1) {
 				sb.append(Constants.notes_e1[pos + halfnotesteps] + " ");
-			} else {
-				// sb.append(". ");
 			}
 			return " " + sb.toString().trim() + " ";
 		} catch (ArrayIndexOutOfBoundsException e) {
@@ -225,38 +246,26 @@ public class Chord implements Comparable {
 		int pos = getFretPosition6_E();
 		if (pos != -1) {
 			sb.append(Constants.notes_E[pos] + " ");
-		} else {
-			// sb.append("&nbsp;");
 		}
 		pos = getFretPosition5_A();
 		if (pos != -1) {
 			sb.append(Constants.notes_A[pos] + " ");
-		} else {
-			// sb.append(". ");
 		}
 		pos = getFretPosition4_d();
 		if (pos != -1) {
 			sb.append(Constants.notes_d[pos] + " ");
-		} else {
-			// sb.append(". ");
 		}
 		pos = getFretPosition3_g();
 		if (pos != -1) {
 			sb.append(Constants.notes_g[pos] + " ");
-		} else {
-			// sb.append(". ");
 		}
 		pos = getFretPosition2_h();
 		if (pos != -1) {
 			sb.append(Constants.notes_h[pos] + " ");
-		} else {
-			// sb.append(". ");
 		}
 		pos = getFretPosition1_e1();
 		if (pos != -1) {
 			sb.append(Constants.notes_e1[pos] + " ");
-		} else {
-			// sb.append(". ");
 		}
 		return " " + sb.toString().trim() + " ";
 	}
@@ -267,18 +276,17 @@ public class Chord implements Comparable {
 
 	public int getFretMin() {
 		int min = 30;
-		
+
 		min = Math.min(min, this.getFretPosition1_e1());
 		min = Math.min(min, this.getFretPosition2_h());
 		min = Math.min(min, this.getFretPosition3_g());
 		min = Math.min(min, this.getFretPosition4_d());
 		min = Math.min(min, this.getFretPosition5_A());
 		min = Math.min(min, this.getFretPosition6_E());
-//		min = Math.min(min, this.getFretPositionBase());
-		
+
 		return min;
 	}
-	
+
 	public int getFretPosition6_E() {
 		if (!fret6_E.toLowerCase().equals("x")) {
 			return new Integer(fret6_E).intValue();
@@ -322,28 +330,71 @@ public class Chord implements Comparable {
 	}
 
 	public String getFretPositions() {
-		return fret6_E + " " + fret5_A + " " + fret4_d + " " + fret3_g + " " + fret2_h + " " + fret1_e1;
+		return fret6_E + " " + fret5_A + " " + fret4_d + " " + fret3_g + " "
+				+ fret2_h + " " + fret1_e1;
 	}
 
-	String writableName = "";
+	/**
+	 * Writable Name of Chord
+	 */
+	private String writableName = "";
 
+	/**
+	 * ChordFamily of Chord
+	 */
 	private ChordFamily family;
 
+	/**
+	 * Set writable Name of Chord, which could be used as entity representation
+	 * for writing to a file
+	 * 
+	 * @param name
+	 *            Name of chord
+	 */
 	public void setWritableName(String name) {
-//		/** Canvases must be differentiated if lyrics are agreggated in one page, so an uuid is used.*/
-//		UUID uuid = UUID.randomUUID();
-		writableName = name;//+"_"+ uuid.toString();
+		writableName = name;
 	}
 
+	/**
+	 * Draw line as String to a HTML-2D-Canvas-Context named ctx
+	 * 
+	 * @param x1
+	 *            Start at x-Position of Line
+	 * @param y1
+	 *            Start at y-Position of Line
+	 * @param x2
+	 *            End at x-Position of Line
+	 * @param y2
+	 *            End at y-Position of Line
+	 * @return String of Line Draw Code for HTML-Canvas
+	 */
 	private String drawLine(double x1, double y1, double x2, double y2) {
-		return "  ctx.beginPath();\n  ctx.moveTo(" + x1 + "," + y1 + ");\n  ctx.lineTo(" + x2 + "," + y2 + ");\n  ctx.stroke();\n";
+		return "  ctx.beginPath();\n  ctx.moveTo(" + x1 + "," + y1
+				+ ");\n  ctx.lineTo(" + x2 + "," + y2 + ");\n  ctx.stroke();\n";
 	}
 
-	private String drawCircle(double x, double y, double r, String fillStyle, String strokeStyle) {
+	/**
+	 * Draw circle as String to a HTML-2D-Canvas-Context named ctx
+	 * 
+	 * @param x
+	 *            x-Position of Circle
+	 * @param y
+	 *            y-Position of Circle
+	 * @param r
+	 *            Radius of Circle
+	 * @param fillStyle
+	 *            Fill-Style of Circle
+	 * @param strokeStyle
+	 *            Stroke-Style of Circle
+	 * @return String of HTML5-Code to draw a circle
+	 */
+	private String drawCircle(double x, double y, double r, String fillStyle,
+			String strokeStyle) {
 		StringBuilder result = new StringBuilder();
 
 		result.append("  ctx.beginPath();\n");
-		result.append("  ctx.arc(" + x + ", " + y + ", " + r + ", 0, 2 * Math.PI, false);\n");
+		result.append("  ctx.arc(" + x + ", " + y + ", " + r
+				+ ", 0, 2 * Math.PI, false);\n");
 
 		if (fillStyle != null) {
 			result.append("  ctx.fillStyle = '" + fillStyle + "';\n");
@@ -360,31 +411,76 @@ public class Chord implements Comparable {
 		return result.toString();
 	}
 
-	private int width = 200;
-	private int height = 280;
-	private int left_border = 50;
-	private int right_border = 20;
-	private int upper_border = 70;
-	private int lower_border = 20;
-	private int fingerSize = 12;
+	/**
+	 * Absolute width of fret-diagram in pixel
+	 */
+	private final int width = 200;
+	/**
+	 * Absolut height in pixel of fret-diagram
+	 */
+	private final int height = 280;
+	/**
+	 * Absolut width of left-border in pixel
+	 */
+	private final int left_border = 50;
+	/**
+	 * Absolut width of right-border in pixel
+	 */
+	private final int right_border = 20;
+	/**
+	 * Absolute hight of upper border in pixel
+	 */
+	private final int upper_border = 70;
+	/**
+	 * Absolute height of lower border in pixel
+	 */
+	private final int lower_border = 20;
+	/**
+	 * Absolute diameter of circle in fret-diagram for finger position in pixel
+	 */
+	private final int fingerSize = 12;
 
+	/**
+	 * Size of Fret Diagramm as float-value (100% = 1.0; 50%=0.5)
+	 */
+	private final float SIZE = 1;
+
+	/**
+	 * String of HTML5-Canvas-Representation of the fret-diagram in default size
+	 * 
+	 * @return HTML5-Cancas-Code as String
+	 */
 	public String getDiagram() {
-		return getDiagram(0.5);
+		return getDiagram(SIZE);
 	}
 
+	/**
+	 * String of HTML5-Canvas-Representation of the fret-diagram in scaled size
+	 * (1.0=100% of default absolut size)
+	 * 
+	 * @param scale
+	 *            Zoom-Factor of fret
+	 * @return HTML5-Cancas-Code as String
+	 */
 	public String getDiagram(double scale) {
-		
+
 		StringBuilder result = new StringBuilder();
 
 		int fretSpace = (height - lower_border - upper_border) / 5;
 		int stringSpace = (width - right_border - left_border) / 5;
 
-		/** Canvases must be differentiated if lyrics are agreggated in one page, so an uuid is used.*/
+		/**
+		 * Canvases must be differentiated if lyrics are agreggated in one page,
+		 * so an uuid is used.
+		 */
 		UUID uuid = UUID.randomUUID();
-		
-		result.append("<canvas id=\"" + getNameWritable()+"_"+ uuid.toString() + "\" width=\"" + width * scale + "\" height=\"" + height * scale + "\"></canvas>\n");
+
+		result.append("<canvas id=\"" + getNameWritable() + "_"
+				+ uuid.toString() + "\" width=\"" + width * scale
+				+ "\" height=\"" + height * scale + "\"></canvas>\n");
 		result.append("<script>\n");
-		result.append("  var c=document.getElementById('" + getNameWritable()+"_"+ uuid.toString() + "');\n");
+		result.append("  var c=document.getElementById('" + getNameWritable()
+				+ "_" + uuid.toString() + "');\n");
 		result.append("  var ctx=c.getContext('2d');\n");
 
 		if (this.fretBase == -1) {
@@ -403,23 +499,27 @@ public class Chord implements Comparable {
 			double stringXpos = left_border + (i * stringSpace);
 			double stringTopPos = upper_border;
 			double stringLowPos = height - lower_border;
-			result.append(drawLine(stringXpos, stringTopPos, stringXpos, stringLowPos));
+			result.append(drawLine(stringXpos, stringTopPos, stringXpos,
+					stringLowPos));
 		}
 
 		// draw Frets
 		for (int i = 0; i < 6; i++) {
 			double fretPos = upper_border + (i * fretSpace);
-			result.append(drawLine(left_border, fretPos, (width - right_border), fretPos));
+			result.append(drawLine(left_border, fretPos,
+					(width - right_border), fretPos));
 		}
 
 		// draw Bund
 		result.append("  ctx.lineWidth = 3;\n");
 		if (this.getFretPositionBase() <= 1) {
-			result.append(drawLine(left_border, upper_border, (width - right_border), upper_border));
+			result.append(drawLine(left_border, upper_border,
+					(width - right_border), upper_border));
 		}
 
 		result.append("  ctx.font = 'bold 26pt Arial';\n");
-		result.append("  ctx.fillText('" + family.getFamilyName() + "', 10, " + (upper_border / 2 - 5) + ");\n");
+		result.append("  ctx.fillText('" + family.getFamilyName() + "', 10, "
+				+ (upper_border / 2 - 5) + ");\n");
 
 		// If chord is a missing chord
 		if (this.fretBase == -1) {
@@ -435,9 +535,12 @@ public class Chord implements Comparable {
 			result.append(draw(5, Constants.notes_e1));
 
 			result.append("  ctx.font = 'bold 18pt Arial';\n");
-			if (getFretPositionBase()!=0) {
-				result.append("  var textWidth = ctx.measureText('" + getFretPositionBase() + "').width;\n");
-				result.append("  ctx.fillText('" + getFretPositionBase() + "', " + left_border / 2 + "-textWidth, " + (upper_border + fretSpace / 2 + 9) + ");\n");
+			if (getFretPositionBase() != 0) {
+				result.append("  var textWidth = ctx.measureText('"
+						+ getFretPositionBase() + "').width;\n");
+				result.append("  ctx.fillText('" + getFretPositionBase()
+						+ "', " + left_border / 2 + "-textWidth, "
+						+ (upper_border + fretSpace / 2 + 9) + ");\n");
 			}
 		}
 
@@ -446,7 +549,16 @@ public class Chord implements Comparable {
 		return result.toString();
 	}
 
-	public String draw(int stringPos, String[] string) {
+	/**
+	 * Helper method to draw String at given position
+	 * 
+	 * @param stringPos
+	 *            Position of String
+	 * @param string
+	 *            Array of notes of String
+	 * @return String as HTML5-Code for Guitar-String
+	 */
+	private String draw(int stringPos, String[] string) {
 
 		StringBuilder result = new StringBuilder();
 
@@ -489,19 +601,30 @@ public class Chord implements Comparable {
 			// draw unplayed string
 			result.append("  ctx.lineWidth = 1;\n");
 			double circlePosY = upper_border + fingerSize - fretSpace;
-			result.append(this.drawLine(circlePosX - fingerSize, circlePosY - fingerSize / 2, circlePosX + fingerSize, circlePosY + fingerSize + fingerSize / 2));
-			result.append(this.drawLine(circlePosX - fingerSize, circlePosY + fingerSize + fingerSize / 2, circlePosX + fingerSize, circlePosY - fingerSize / 2));
+			result.append(this.drawLine(circlePosX - fingerSize, circlePosY
+					- fingerSize / 2, circlePosX + fingerSize, circlePosY
+					+ fingerSize + fingerSize / 2));
+			result.append(this.drawLine(circlePosX - fingerSize, circlePosY
+					+ fingerSize + fingerSize / 2, circlePosX + fingerSize,
+					circlePosY - fingerSize / 2));
 		}
 
 		if (fretPosString != -1) {
 			int textHeight = 12;
 			result.append(" ctx.font = 'bold " + textHeight + "pt Arial';\n");
 			String note = string[fretPosString];
-			result.append("  var textWidth = ctx.measureText('" + note + "').width;\n");
-			result.append("  ctx.fillText('" + note + "', " + circlePosX + "-textWidth/2, " + (upper_border + fretPos * fretSpace - fretSpace / 2 + textHeight / 2) + ");\n");
+			result.append("  var textWidth = ctx.measureText('" + note
+					+ "').width;\n");
+			result.append("  ctx.fillText('"
+					+ note
+					+ "', "
+					+ circlePosX
+					+ "-textWidth/2, "
+					+ (upper_border + fretPos * fretSpace - fretSpace / 2 + textHeight / 2)
+					+ ");\n");
 
 			int base = 1;
-			if (this.getFretPositionBase()<=1) {
+			if (this.getFretPositionBase() <= 1) {
 				base = 1;
 			} else {
 				base = this.getFretPositionBase();
@@ -514,33 +637,52 @@ public class Chord implements Comparable {
 			if (finger.equals("C")) {
 				// draw capo
 				result.append("  ctx.lineWidth = 12;\n");
-				double capoY = upper_border + fretPos * fretSpace - fingerSize / 2 + fretSpace / 2 * 3 / 2;
-				result.append(drawLine(left_border, capoY, (width - right_border), capoY));
+				double capoY = upper_border + fretPos * fretSpace - fingerSize
+						/ 2 + fretSpace / 2 * 3 / 2;
+				result.append(drawLine(left_border, capoY,
+						(width - right_border), capoY));
 				result.append("  ctx.lineWidth = 1;\n");
 			} else {
 				if (fretPos == 0) {
 					if (this.getFretPositionBase() > 1) {
 						fretPos += 1;
-						result.append(this.drawCircle(circlePosX, upper_border + fretPos * fretSpace - fretSpace / 2, fingerSize, "black", null));
+						result.append(this.drawCircle(circlePosX, upper_border
+								+ fretPos * fretSpace - fretSpace / 2,
+								fingerSize, "black", null));
 					} else {
 						if (fretPosString == 1) {
 							fretPos += 1;
-							result.append(this.drawCircle(circlePosX, upper_border + fretPos * fretSpace - fretSpace / 2, fingerSize, "black", null));
+							result.append(this.drawCircle(circlePosX,
+									upper_border + fretPos * fretSpace
+											- fretSpace / 2, fingerSize,
+									"black", null));
 						} else {
-							result.append(this.drawCircle(circlePosX, upper_border + fretPos * fretSpace - fretSpace / 2, fingerSize, null, null));
+							result.append(this.drawCircle(circlePosX,
+									upper_border + fretPos * fretSpace
+											- fretSpace / 2, fingerSize, null,
+									null));
 						}
 					}
 				} else {
 					fretPos += 1;
-					result.append(this.drawCircle(circlePosX, upper_border + fretPos * fretSpace - fretSpace / 2, fingerSize, "black", null));
+					result.append(this.drawCircle(circlePosX, upper_border
+							+ fretPos * fretSpace - fretSpace / 2, fingerSize,
+							"black", null));
 				}
 
 				if (finger != "-") {
 					result.append("  ctx.fillStyle='#ffffff';\n");
-					result.append("  ctx.font = 'bold " + textHeight + "pt Arial';\n");
-					result.append("  var textWidth = ctx.measureText('" + finger + "').width;\n");
-					result.append("  ctx.fillText('" + finger + "', " + (left_border + stringPos * stringSpace) + "-textWidth/2, "
-							+ (upper_border + fretPos * fretSpace - fretSpace / 2 + textHeight / 2) + ");\n");
+					result.append("  ctx.font = 'bold " + textHeight
+							+ "pt Arial';\n");
+					result.append("  var textWidth = ctx.measureText('"
+							+ finger + "').width;\n");
+					result.append("  ctx.fillText('"
+							+ finger
+							+ "', "
+							+ (left_border + stringPos * stringSpace)
+							+ "-textWidth/2, "
+							+ (upper_border + fretPos * fretSpace - fretSpace
+									/ 2 + textHeight / 2) + ");\n");
 					result.append("  ctx.fillStyle='#000000';\n");
 				}
 			}
@@ -550,28 +692,31 @@ public class Chord implements Comparable {
 	}
 
 	public String getNameWritable() {
-		
+
 		if (this.fretBase == -1) {
 			return "Missed_" + writableName;
 		}
-		
+
 		return writableName;
 	}
 
+	/**
+	 * Constructor of Chord by String of ChordPro-Definition, ie. {define: A
+	 * base-fret 1 frets 0 0 2 2 2 0 fingers - - 4 3 2 -}
+	 * 
+	 * @param chordproDefinition
+	 *            Definition String
+	 */
 	public Chord(String chordproDefinition) {
-
 		if (!chordproDefinition.contains("{")) {
 			fretBase = -1;
 			ChordFamily cf = new ChordFamily(chordproDefinition);
-			// cf.addName(chordproDefinition);
-			// this.setFamily(cf);
 			cf.add(this);
 			return;
 		}
 
-		// System.out.println(chordproDefinition);
-		// {define: A base-fret 1 frets 0 0 2 2 2 0 fingers - - 4 3 2 -}
-		StringTokenizer tokenizer = new StringTokenizer(chordproDefinition.replace("{define: ", "").replace("}", ""), " ");
+		StringTokenizer tokenizer = new StringTokenizer(chordproDefinition
+				.replace("{define: ", "").replace("}", ""), " ");
 
 		String skipName = "";
 		while (!skipName.equals("base-fret")) {
@@ -596,14 +741,28 @@ public class Chord implements Comparable {
 		finger1 = tokenizer.nextToken();
 	}
 
+	/**
+	 * Returns ChordFamily of Chord
+	 * 
+	 * @return Family of Chord
+	 */
 	public ChordFamily getFamily() {
 		return family;
 	}
 
+	/**
+	 * Set ChordFamily of Chord
+	 * 
+	 * @param family
+	 *            ChordFamily
+	 */
 	public void setFamily(ChordFamily family) {
 		this.family = family;
 	}
 
+	/**
+	 * Comparator for Chord
+	 */
 	@Override
 	public int compareTo(Object o) {
 

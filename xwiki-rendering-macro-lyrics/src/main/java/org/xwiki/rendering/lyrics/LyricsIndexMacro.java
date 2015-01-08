@@ -70,7 +70,8 @@ public class LyricsIndexMacro extends AbstractMacro<LyricsIndexMacroParameters> 
 	 * Create and initialize the descriptor of the macro.
 	 */
 	public LyricsIndexMacro() {
-		super("LyricsIndex", DESCRIPTION, new DefaultContentDescriptor(CONTENT_DESCRIPTION), LyricsIndexMacroParameters.class);
+		super("LyricsIndex", DESCRIPTION, new DefaultContentDescriptor(
+				CONTENT_DESCRIPTION), LyricsIndexMacroParameters.class);
 		setDefaultCategory(DEFAULT_CATEGORY_CONTENT);
 	}
 
@@ -88,19 +89,24 @@ public class LyricsIndexMacro extends AbstractMacro<LyricsIndexMacroParameters> 
 	}
 
 	@Override
-	public List<Block> execute(LyricsIndexMacroParameters parameters, String content, MacroTransformationContext context) throws MacroExecutionException {
+	public List<Block> execute(LyricsIndexMacroParameters parameters,
+			String content, MacroTransformationContext context)
+			throws MacroExecutionException {
 
 		StringBuilder buildContent = new StringBuilder();
 
 		String mode = "artist";
+		String prefix = "";
 		
-		if (parameters!=null) {
-			if (parameters.getMode()!=null) {
+		if (parameters != null) {
+			if (parameters.getMode() != null) {
 				mode = parameters.getMode();
 			}
+			if (parameters.getPrefix() != null) {
+				prefix = parameters.getPrefix();
+			}
 		}
-		
-		
+
 		if (mode.equals("artist")) {
 			Hashtable<String, ArrayList<Lyrics>> songTable = getLyricsByArtist();
 			Vector<String> artists = new Vector<String>(songTable.keySet());
@@ -109,24 +115,36 @@ public class LyricsIndexMacro extends AbstractMacro<LyricsIndexMacroParameters> 
 				buildContent.append("== " + artist + " ==\n");
 				ArrayList<Lyrics> songs = songTable.get(artist);
 				for (Lyrics song : songs) {
-					buildContent.append("* [[" + song.getTitle() + ">>" + song.getDocument() + "]]\n");
+
+					if (prefix.equals("")) {
+						buildContent.append("* [[" + song.getTitle() + ">>"
+								+ song.getDocument() + "]]\n");
+					} else {
+//						System.out.println(song.getDocument().getName());
+						if (song.getDocument().getName().startsWith(prefix)) {
+							buildContent.append("* [[" + song.getTitle() + ">>"
+									+ song.getDocument() + "]]\n");
+						}
+					}
 				}
 			}
 		}
-		
+
 		if (mode.equals("title")) {
 			int counter = 0;
 			Hashtable<String, Lyrics> songs = new Hashtable<String, Lyrics>();
 			ArrayList<String> titles = new ArrayList<String>();
 			for (Lyrics song : getLyrics()) {
-				
-				String title  = song.getTitle();
-				
+
+				String title = song.getTitle();
+
 				if (title.contains(")")) {
-					title = title.substring(title.indexOf(")")+1, title.length()).trim();
+					title = title.substring(title.indexOf(")") + 1,
+							title.length()).trim();
 				}
-				
-//				System.out.println(title+": "+song.getTitle() + " - "+title.substring(0, 1));
+
+				// System.out.println(title+": "+song.getTitle() +
+				// " - "+title.substring(0, 1));
 				titles.add(title + " " + counter);
 				songs.put(title + " " + counter, song);
 				counter++;
@@ -140,16 +158,27 @@ public class LyricsIndexMacro extends AbstractMacro<LyricsIndexMacroParameters> 
 				Lyrics song = songs.get(title);
 				if (!startingLetter.equals(title.substring(0, 1))) {
 					startingLetter = title.substring(0, 1);
-//					System.out.println("Start: "+startingLetter);
+					// System.out.println("Start: "+startingLetter);
 					buildContent.append("== " + startingLetter + " ==\n");
 				}
 				
-				buildContent.append("* [[" + song.getTitle() + ">>" + song.getDocument() + "]]\n");
+				if (prefix.equals("")) {
+					buildContent.append("* [[" + song.getTitle() + ">>"
+							+ song.getDocument() + "]]\n");
+				} else {
+//					System.out.println(song.getDocument().getName());
+					if (song.getDocument().getName().startsWith(prefix)) {
+						buildContent.append("* [[" + song.getTitle() + ">>"
+								+ song.getDocument() + "]]\n");
+					}
+				}
+				
 			}
-			
+
 		}
 
-		List<Block> result = this.contentParser.parse(buildContent.toString(), context, true, context.isInline()).getChildren();
+		List<Block> result = this.contentParser.parse(buildContent.toString(),
+				context, true, context.isInline()).getChildren();
 
 		return result;
 	}
@@ -157,7 +186,8 @@ public class LyricsIndexMacro extends AbstractMacro<LyricsIndexMacroParameters> 
 	private List<Lyrics> getLyrics() {
 		List<Lyrics> list = new ArrayList<Lyrics>();
 		try {
-			for (Object lyricsObj : componentManagerProvider.get().getInstanceList(Lyrics.class)) {
+			for (Object lyricsObj : componentManagerProvider.get()
+					.getInstanceList(Lyrics.class)) {
 				Lyrics lyrics = (Lyrics) lyricsObj;
 				list.add(lyrics);
 			}
@@ -200,7 +230,8 @@ public class LyricsIndexMacro extends AbstractMacro<LyricsIndexMacroParameters> 
 				if (song.getArtist().contains(artist)) {
 					songs.add(song);
 				}
-				if (artist.equals("Unbekannt") && song.getArtist().contains("Unknown")) {
+				if (artist.equals("Unbekannt")
+						&& song.getArtist().contains("Unknown")) {
 					songs.add(song);
 				}
 			}

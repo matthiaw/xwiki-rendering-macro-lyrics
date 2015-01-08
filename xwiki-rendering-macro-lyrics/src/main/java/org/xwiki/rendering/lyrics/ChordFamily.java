@@ -28,7 +28,7 @@ public class ChordFamily {
 			return found;
 		}
 
-		// Wenn spezifischer nicht gefunden, dann nächst höherer Akkord
+		// Wenn spezifischer nicht gefunden, dann nï¿½chst hï¿½herer Akkord
 		for (Chord chord : chords) {
 			if ((found==null)&&(chord.getFretPositionBase() > fret)) {
 				Chord capoChord = ChordFamilys.getChordForCapoPattern(chord, fret);
@@ -50,7 +50,7 @@ public class ChordFamily {
 			return found;
 		}
 		
-		// Wenn spezifischer nicht gefunden, dann nächst höherer Akkord
+		// Wenn spezifischer nicht gefunden, dann nï¿½chst hï¿½herer Akkord
 		for (Chord chord : chords) {
 			if (chord.getFretPositionBase() > fret) {
 				found = chord;
@@ -60,6 +60,9 @@ public class ChordFamily {
 	}
 
 	public ChordFamily(String nameOfFamily) {
+		
+//		System.out.println("!!!"+nameOfFamily);
+		
 		StringTokenizer tokenizer = new StringTokenizer(nameOfFamily, " ");
 		String[] info = null;
 
@@ -147,7 +150,7 @@ public class ChordFamily {
 	}
 
 	public String getWriteableFamilyName() {
-		return getFamilyName().replace("/", "_").replace("#", "x").replace("°", "dim").replace("M", "Major");
+		return getFamilyName().replace("/", "_").replace("#", "x").replace("ï¿½", "dim").replace("M", "Major");
 	}
 
 	public void addName(String name) {

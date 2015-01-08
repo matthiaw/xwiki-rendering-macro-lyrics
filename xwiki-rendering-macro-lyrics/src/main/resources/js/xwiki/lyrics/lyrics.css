@@ -1,29 +1,46 @@
 /* -----------------Lyrics Macro-----------------------*/
+p {
+  font-family: "Century Gothic",CenturyGothic,AppleGothic,sans-serif;
+}
+
 table.lyrics {
+  width:1%;
+  min-width:1px;
   border: 0px;
   margin: 2px 0px;
+  background: transparent;
 }
 
 #content table.lyrics {
+  width:1%;
+  min-width:1px;
   border: 0px;
   display: inline;
   border-collapse: separate;
+  background: transparent;
 }
 
 td.lyrics_chords {
+  width:1%;
+  min-width:1px;
   border: 0px;
   padding: 0px;
   border-spacing: 0px;
   /*color: #FFCC00;*/
-  font-size: 12px;
+  font-size: 10px;
   font-weight: bold;	
+  background: transparent;
 }
 
 td.lyrics_verses {
+  width:1%;
+  min-width:1px;
   border: 0px;
   border-spacing: 0px;
   padding: 0px;
   white-space: nowrap;
+  font-family: "Century Gothic",CenturyGothic,AppleGothic,sans-serif;
+  background: transparent;
 }
 
 .lyrics_capo {
@@ -90,6 +107,16 @@ div.lyrics_chorus {
   #hierarchy, #document-info, #xwikidata, #xdocAuthors, #_comments, #xdocTags, #xdocFooter, #headerglobal {
      display:none;
   }
+
+td.lyrics_verses {
+  font-size: 14px;
+  color: #000000;
+}
+
+div.lyrics_chorus {
+  font-size: 14px;
+  color: #000000;
+}
 
   .noPrint
     {

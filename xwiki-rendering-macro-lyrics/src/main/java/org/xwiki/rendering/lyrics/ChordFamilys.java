@@ -16,8 +16,16 @@ import java.util.Iterator;
 
 public class ChordFamilys {
 
+//	public static void main(String... args) {
+////		for (ChordFamily f : ChordFamilys.getFamilys()) {
+////			System.out.println(f.getFamilyName());
+////		}
+//		
+//		Song s = new Song(" Text [A] , wwwdwefwf");
+//	}
+	
 	private static Hashtable<String, ChordFamily> map = new Hashtable<String, ChordFamily>();
-
+	
 	public static ArrayList<ChordFamily> getFamilys() {
 		ArrayList<ChordFamily> list = new ArrayList<ChordFamily>();
 
@@ -83,6 +91,11 @@ public class ChordFamilys {
 
 	private static void readPositions(String filename) {
 		LineNumberReader lineNumberReader = null;
+
+//		File f = new File(filename);
+//		if (!f.exists()) {
+//			System.err.println("File "+f.getAbsolutePath()+" not exists!");
+//		}
 		
 		try {
 			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -90,15 +103,18 @@ public class ChordFamilys {
 			if (classLoader == null) {
 			    classLoader = Class.class.getClassLoader();
 			}
-
+			
 			InputStream is = classLoader.getResourceAsStream(filename);
+			
 			lineNumberReader = new LineNumberReader(new InputStreamReader(is, "UTF-8"));
+			
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} 
 
 		try {
 			String line = lineNumberReader.readLine();
+//			System.out.println("Read: "+lineNumberReader.getLineNumber());
 			ArrayList<Chord> definitions = new ArrayList<Chord>();
 			String chordNames = "";
 			do {
@@ -143,6 +159,12 @@ public class ChordFamilys {
 			for (String name : family.getNames()) {
 				map.put(name, family);
 			}
+		}
+		
+		if (list.size()==0) {
+			System.err.println("Chord-Definitions could not be loaded!");
+		} else {
+			System.out.println(list.size()+" Chord-Definitions loaded.");
 		}
 	}
 

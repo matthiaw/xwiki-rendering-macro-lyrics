@@ -364,8 +364,8 @@ public class Song {
 							+ "|| navigator.userAgent.match(/iPod/i)\n" + "|| navigator.userAgent.match(/BlackBerry/i)\n"
 							+ "|| navigator.userAgent.match(/Windows Phone/i)){\n" + " document.write(\"<sub>" + copyright + ss
 							+ ", CCLI: <a href='http://mobile.songselect.com/songs/" + ccli.longValue() + "/'>" + ccli.longValue() + "</a></sub>\");\n"
-							+ "} else {\n" + " document.write(\"<sub>" + copyright  + ", CCLI: <a href='http://de.songselect.com/songs/" + ccli.longValue()
-							+ "/'>" + ccli.longValue() + "</a></sub>\");\n" + "}\n" + "</script>"+ss+"\n\n{{/html}}\n\n";
+							+ "} else {\n" + " document.write(\"<sub>" + copyright  + ", CCLI: <a href='https://de.songselect.com/songs/" + ccli.longValue()
+							+ "/'>" + ccli.longValue() + "</a>"+ss+"</sub>\");\n" + "}\n" + "</script>"+"\n\n{{/html}}\n\n";
 					template.append(ccliString);
 				} else {
 					String s = "\n\n\n{{html}}\n\n" + "<sub>" + copyright + ss + "</sub>" + "\n{{/html}}\n\n";
